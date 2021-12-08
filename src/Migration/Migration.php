@@ -17,7 +17,6 @@ use PinkCrab\DB_Migration\Database_Migration;
 use PinkCrab\Perique\Interfaces\Inject_DI_Container;
 use PinkCrab\Table_Builder\Schema;
 
-
 abstract class Migration extends Database_Migration implements Inject_DI_Container {
 
 	/**
@@ -32,14 +31,6 @@ abstract class Migration extends Database_Migration implements Inject_DI_Contain
 	}
 
 	abstract protected function table_name(): string;
-
-	/**
-	 * Defines the schema for the migration.
-	 *
-	 * @param Schema $schema_config
-	 * @return void
-	 */
-	abstract public function schema( Schema $schema_config ): void;
 
 	/**
 	 * Is this table dropped on deactivation
