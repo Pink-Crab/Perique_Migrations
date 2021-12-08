@@ -66,13 +66,16 @@ class Activation implements State_Events_Activation {
 	 * @return string[] Array of table names.
 	 */
 	private function tables_to_exclude_from_seeding(): array {
+		/** @var Migration[] */
+		$migrations = $this->migration_manager->get_migrations();
+
 		return array_values(
 			array_map(
 				function( Migration $migration ): string {
 					return $migration->get_table_name();
 				},
 				array_filter(
-					$this->migration_manager->get_migrations(),
+					$migrations,
 					function( Migration $migration ):bool {
 						return count( $migration->get_seeds() ) === 0
 						|| ! $migration->seed_on_inital_activation();

@@ -59,14 +59,26 @@ class Plugin_State_Controller {
 	 *
 	 * @param string|Plugin_State_Change $state_event
 	 * @return self
+	 * @throws Plugin_State_Exception If none Plugin_State_Change (string or object) passed or fails to create instance from valid class name.
 	 */
 	public function event( $state_event ): self {
 		if ( ! is_subclass_of( $state_event, Plugin_State_Change::class ) ) {
 			throw Plugin_State_Exception::invalid_state_change_event_type( $state_event );
 		}
-		$this->state_events[] = is_string( $state_event )
-			? $this->app->get_container()->create( $state_event )
-			: $state_event;
+
+		// If its a string, attempt to create via DI container.
+		if ( is_string( $state_event ) ) {
+			$state_event_string = $state_event;
+
+			/** @var Plugin_State_Change|null */
+			$state_event = $this->app->get_container()->create( $state_event );
+
+			// Throw exception if failed to create
+			if ( null === $state_event || ! is_a( $state_event, Plugin_State_Change::class ) ) {
+				throw Plugin_State_Exception::failed_to_create_state_change_event( $state_event_string );
+			}
+		}
+		$this->state_events[] = $state_event;
 		return $this;
 	}
 
@@ -121,11 +133,12 @@ class Plugin_State_Controller {
 	 */
 	private function get_called_file(): string {
 		$file              = false;
-		$backtrace         = debug_backtrace();
+		$backtrace         = debug_backtrace(); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_debug_backtrace
 		$include_functions = array( 'include', 'include_once', 'require', 'require_once' );
-		for ( $index = 0; $index < count( $backtrace ); $index++ ) {
+		$backtrace_count   = count( $backtrace );
+		for ( $index = 0; $index < $backtrace_count; $index++ ) { //phpcs:ignore Generic.CodeAnalysis.ForLoopWithTestFunctionCall.NotAllowed
 			$function = $backtrace[ $index ]['function'];
-			if ( in_array( $function, $include_functions ) ) {
+			if ( in_array( $function, $include_functions, true ) ) {
 				$file = $backtrace[ $index - 1 ]['file'];
 				break;
 			}

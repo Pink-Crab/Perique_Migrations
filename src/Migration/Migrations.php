@@ -94,10 +94,20 @@ class Migrations {
 	/**
 	 * Get an array of all migrations, constructed
 	 *
-	 * @return array
+	 * @return Migration[]
 	 */
 	protected function get_migrations(): array {
-		return array_map( array( $this->app->get_container(), 'create' ), $this->migrations );
+		return array_map(
+			function( string $migration_class_name ) {
+				/** @var Migration|null */
+				$migration = $this->app->get_container()->create( $migration_class_name );
+				if ( null === $migration || ! is_a( $migration, Migration::class ) ) {
+					throw Migration_Exception::failed_to_construct_migration( $migration_class_name );
+				}
+				return $migration;
+			},
+			$this->migrations
+		);
 	}
 
 	/**
@@ -112,9 +122,7 @@ class Migrations {
 		foreach ( $migrations as $migration ) {
 			$migration_manager->add_migration( $migration );
 		}
-        dump((new Activation( $migration_manager ))->tables_to_exclude_from_seeding());
 		$this->plugin_state_controller->event( new Activation( $migration_manager ) );
 
-		// dump( $this );
 	}
 }

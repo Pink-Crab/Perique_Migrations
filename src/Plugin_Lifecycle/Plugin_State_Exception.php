@@ -20,20 +20,30 @@ class Plugin_State_Exception extends Exception {
 	/**
 	 * Returns an exception if an event can not constructed with DI.
 	 * @code 101
-	 * @return App_Initialization_Exception
+	 * @param Plugin_State_Change|string $event
+	 * @param Throwable|null $exception
+	 * @return Plugin_State_Exception
 	 */
-	public static function failed_to_create_state_change_event( $event, ?Throwable $th = null ): Plugin_State_Exception {
-		$message = \sprintf( 'Failed to construct %s using the DI Container. %s', get_class( $event ), $th->getMessage() ?? '' );
+	public static function failed_to_create_state_change_event( $event, ?Throwable $exception = null ): Plugin_State_Exception {
+		$message = \sprintf(
+			'Failed to construct %s using the DI Container. %s',
+			is_string( $event ) ? $event : get_class( $event ),
+			$exception ? $exception->getMessage() : ''
+		);
 		return new Plugin_State_Exception( $message, 101 );
 	}
 
 	/**
 	 * Returns an exception for adding a none event change class
 	 * @code 102
-	 * @return App_Initialization_Exception
+	 * @param string|object $event
+	 * @return Plugin_State_Exception
 	 */
-	public static function invalid_state_change_event_type( $class ): Plugin_State_Exception {
-		$message = \sprintf( '$s is not a valid Plugin State Change Event class', is_string( $class ) ? $class : get_class( $class ) );
+	public static function invalid_state_change_event_type( $event ): Plugin_State_Exception {
+		$message = \sprintf(
+			'%s is not a valid Plugin State Change Event class',
+			is_string( $event ) ? $event : get_class( $event )
+		);
 		return new Plugin_State_Exception( $message, 102 );
 	}
 }
