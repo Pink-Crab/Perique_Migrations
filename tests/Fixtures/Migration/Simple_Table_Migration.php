@@ -32,7 +32,7 @@ class Simple_Table_Migration extends Migration {
 	 */
 	public function schema( Schema $schema_config ): void {
 		$schema_config->column( 'id' )->unsigned_int( 11 )->auto_increment();
-		$schema_config->column( 'user' )->int( 11 );
+		$schema_config->column( 'user' )->varchar( 11 );
 		$schema_config->index('id')->primary();
 	}
 }

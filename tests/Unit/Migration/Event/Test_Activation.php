@@ -82,6 +82,10 @@ class Test_Activation extends WP_UnitTestCase {
 		// Both users from Has_Seeds_Migration seed should have been inserted.
 		$this->assertCount( 2, $wpdb->usage_log['insert']['has_seeds_migration'] );
 		$this->assertEquals( 'Alpha', $wpdb->usage_log['insert']['has_seeds_migration'][0]['data']['user'] );
+		$this->assertEquals( '%s', $wpdb->usage_log['insert']['has_seeds_migration'][0]['format'][0] );
 		$this->assertEquals( 'Bravo', $wpdb->usage_log['insert']['has_seeds_migration'][1]['data']['user'] );
+		$this->assertEquals( '%s', $wpdb->usage_log['insert']['has_seeds_migration'][1]['format'][0] );
 	}
+
+
 }

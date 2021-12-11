@@ -34,7 +34,7 @@ class Has_Seeds_Migration_But_Disabled extends Migration {
 	 */
 	public function schema( Schema $schema_config ): void {
 		$schema_config->column( 'bar' )->unsigned_int( 11 )->auto_increment();
-		$schema_config->column( 'foo' )->int( 11 );
+		$schema_config->column( 'foo' )->text( 11 );
 		$schema_config->index( 'bar' )->primary();
 	}
 
