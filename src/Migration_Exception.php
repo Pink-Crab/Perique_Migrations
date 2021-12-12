@@ -10,7 +10,7 @@ declare(strict_types=1);
  * @since 0.0.1
  */
 
-namespace PinkCrab\Migration\Migration;
+namespace PinkCrab\Migration;
 
 use Exception;
 use Throwable;
@@ -25,5 +25,16 @@ class Migration_Exception extends Exception {
 	public static function failed_to_construct_migration( string $migration_class_name ): Migration_Exception {
 		$message = \sprintf( 'Failed to construct %s using the DI Container', $migration_class_name );
 		return new Migration_Exception( $message, 101 );
+	}
+
+	/**
+	 * Returns an exception for a none Migration (string class name or instance) type
+	 * @code 102
+	 * @param mixed $var
+	 * @return Migration_Exception
+	 */
+	public static function none_migration_type( $var ): Migration_Exception {
+		$message = \sprintf( 'Migration::class instance or class name expected, got %s', \gettype( $var ) );
+		return new Migration_Exception( $message, 102 );
 	}
 }

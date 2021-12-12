@@ -5,22 +5,21 @@ declare(strict_types=1);
 /**
  * Unit tests for the Migrations "Activation" plugin event
  *
- * @since 0.3.0
+ * @since 0.1.0
  * @author GLynn Quelch <glynn.quelch@gmail.com>
  */
 
 namespace PinkCrab\Migration\Tests\Unit\Migration\Event;
 
 use WP_UnitTestCase;
-use PinkCrab\Table_Builder\Builder;
+use PinkCrab\Migration\Event\Activation;
 use PinkCrab\Table_Builder\Engines\Engine;
 use PinkCrab\DB_Migration\Migration_Manager;
-use PinkCrab\Migration\Migration\Event\Activation;
-use PinkCrab\Migration\Tests\Fixtures\Migration\Has_Seeds_Migration;
-use PinkCrab\Migration\Tests\Fixtures\Data_Providers\General_Providers;
-use PinkCrab\Migration\Tests\Fixtures\Migration\Simple_Table_Migration;
+use PinkCrab\Migration\Tests\Helpers\Logable_WPDB;
+use PinkCrab\Migration\Tests\Fixtures\Has_Seeds_Migration;
+use PinkCrab\Migration\Tests\Fixtures\Simple_Table_Migration;
+use PinkCrab\Migration\Tests\Fixtures\Has_Seeds_Migration_But_Disabled;
 use PinkCrab\Migration\Tests\Fixtures\Data_Providers\Migration_Manager_Provider;
-use PinkCrab\Migration\Tests\Fixtures\Migration\Has_Seeds_Migration_But_Disabled;
 
 class Test_Activation extends WP_UnitTestCase {
 
@@ -57,7 +56,7 @@ class Test_Activation extends WP_UnitTestCase {
 
 	/** @testdox It should be possible to set data to be seeded on activation. There should also be a way to disable seeding, even if data is present too. */
 	public function test_can_seed_tables(): void {
-		$wpdb = ( new General_Providers() )->wpdb_with_log();
+		$wpdb = new Logable_WPDB();
 
 		$migration_manager_tuple = $this->migration_manager_provider->with_logging_table_builder( 'test_can_seed_tables', $wpdb );
 		/** @var Migration_Manager */
