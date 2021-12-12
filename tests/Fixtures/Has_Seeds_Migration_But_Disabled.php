@@ -5,22 +5,22 @@ declare(strict_types=1);
 /**
  * Mock class used for activation which writes to options table
  *
- * @package PinkCrab\Migration\Migration
+ * @package PinkCrab\Migration
  * @author Glynn Quelch glynn@pinkcrab.co.uk
  * @since 0.0.1
  */
 
-namespace PinkCrab\Migration\Tests\Fixtures\Migration;
+namespace PinkCrab\Migration\Tests\Fixtures;
 
-use PinkCrab\Migration\Migration\Migration;
+use PinkCrab\Migration\Migration;
 use PinkCrab\Table_Builder\Schema;
 
-class Has_Seeds_Migration extends Migration {
+class Has_Seeds_Migration_But_Disabled extends Migration {
 
-	public const TABLE_NAME = 'has_seeds_migration';
+	public const TABLE_NAME = 'has_seeds_migration_disabled';
 	public const SEED_DATA  = array(
-		array( 'user' => 'Alpha' ),
-		array( 'user' => 'Bravo' ),
+		array( 'foo' => 'INVALID' ),
+		array( 'foo' => 'INVALID' ),
 	);
 
 	protected function table_name(): string {
@@ -33,9 +33,9 @@ class Has_Seeds_Migration extends Migration {
 	 * @return void
 	 */
 	public function schema( Schema $schema_config ): void {
-		$schema_config->column( 'id' )->unsigned_int( 11 )->auto_increment();
-		$schema_config->column( 'user' )->text( 11 );
-		$schema_config->index( 'id' )->primary();
+		$schema_config->column( 'bar' )->unsigned_int( 11 )->auto_increment();
+		$schema_config->column( 'foo' )->text( 11 );
+		$schema_config->index( 'bar' )->primary();
 	}
 
 	/**
@@ -46,5 +46,12 @@ class Has_Seeds_Migration extends Migration {
 	 */
 	public function seed( array $seeds ): array {
 		return self::SEED_DATA;
+	}
+
+	/**
+	 * DO NOT SEED
+	 */
+	public function seed_on_inital_activation(): bool {
+		return false;
 	}
 }

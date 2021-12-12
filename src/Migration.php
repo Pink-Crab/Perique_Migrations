@@ -10,19 +10,13 @@ declare(strict_types=1);
  * @since 0.0.1
  */
 
-namespace PinkCrab\Migration\Migration;
+namespace PinkCrab\Migration;
 
-use PinkCrab\Perique\Services\Container_Aware_Traits\Inject_DI_Container_Aware;
 use PinkCrab\DB_Migration\Database_Migration;
-use PinkCrab\Perique\Interfaces\Inject_DI_Container;
 use PinkCrab\Table_Builder\Schema;
 
-abstract class Migration extends Database_Migration implements Inject_DI_Container {
+abstract class Migration extends Database_Migration {
 
-	/**
-	 * Gives access to the DI Container.
-	 */
-	use Inject_DI_Container_Aware;
 
 	public function __construct() {
 		$this->table_name = $this->table_name();
@@ -35,6 +29,8 @@ abstract class Migration extends Database_Migration implements Inject_DI_Contain
 	/**
 	 * Is this table dropped on deactivation
 	 *
+	 * Defaults to false.
+	 *
 	 * @return bool
 	 */
 	public function drop_on_deactivation(): bool {
@@ -42,12 +38,35 @@ abstract class Migration extends Database_Migration implements Inject_DI_Contain
 	}
 
 	/**
+	 * Drop table on uninstall.
+	 *
+	 * Defaults to false.
+	 *
+	 * @return bool
+	 */
+	public function drop_on_uninstall(): bool {
+		return false;
+	}
+
+	/**
 	 * Should this migration be seeded on activation.
+	 *
 	 * Defaults to true.
 	 *
 	 * @return bool
 	 */
 	public function seed_on_inital_activation(): bool {
+		return true;
+	}
+
+	/**
+	 * Should this migration be created on activation.
+	 *
+	 * Defaults to true.
+	 *
+	 * @return bool
+	 */
+	public function create_on_inital_activation(): bool {
 		return true;
 	}
 }

@@ -5,14 +5,14 @@ declare(strict_types=1);
 /**
  * Mock class used for activation which writes to options table
  *
- * @package PinkCrab\Migration\Migration
+ * @package PinkCrab\Migration
  * @author Glynn Quelch glynn@pinkcrab.co.uk
  * @since 0.0.1
  */
 
-namespace PinkCrab\Migration\Tests\Fixtures\Migration;
+namespace PinkCrab\Migration\Tests\Fixtures;
 
-use PinkCrab\Migration\Migration\Migration;
+use PinkCrab\Migration\Migration;
 use PinkCrab\Table_Builder\Schema;
 
 

@@ -10,12 +10,11 @@ declare(strict_types=1);
  * @since 0.0.1
  */
 
-namespace PinkCrab\Migration\Migration\Event;
+namespace PinkCrab\Migration\Event;
 
 use PinkCrab\DB_Migration\Migration_Manager;
-use PinkCrab\DB_Migration\Database_Migration;
-use PinkCrab\Migration\Migration\Migration;
-use PinkCrab\Migration\Plugin_Lifecycle\State_Events\Activation as State_Events_Activation;
+use PinkCrab\Migration\Migration;
+use PinkCrab\Plugin_Lifecycle\State_Event\Activation as State_Events_Activation;
 
 
 class Activation implements State_Events_Activation {
@@ -78,7 +77,7 @@ class Activation implements State_Events_Activation {
 					$migrations,
 					function( Migration $migration ):bool {
 						return count( $migration->get_seeds() ) === 0
-						|| ! $migration->seed_on_inital_activation();
+						|| false === $migration->seed_on_inital_activation();
 					}
 				)
 			)
