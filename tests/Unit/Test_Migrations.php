@@ -160,6 +160,7 @@ class Test_Migrations extends WP_UnitTestCase {
 		$migrations->add_migration( Simple_Table_Migration::class );
 	}
 
+
 	public function test_throw_exception_if_wrong_type_is_returned_from_constructing_migration(): void {
 		$migrations         = new Migrations( self::$plugin_state_controller );
 		$container          = new Null_DI_Container();
