@@ -5,20 +5,20 @@ declare(strict_types=1);
 /**
  * Abstract class for all Migrations
  *
- * @package PinkCrab\Migration\Plugin_Lifecycle
+ * @package PinkCrab\Perique\Migration\Plugin_Lifecycle
  * @author Glynn Quelch glynn@pinkcrab.co.uk
  * @since 0.0.1
  */
 
-namespace PinkCrab\Migration;
+namespace PinkCrab\Perique\Migration;
 
 use PinkCrab\DB_Migration\Factory;
 use PinkCrab\Perique\Interfaces\DI_Container;
 use PinkCrab\DB_Migration\Migration_Manager;
 use PinkCrab\Plugin_Lifecycle\Plugin_State_Controller;
-use PinkCrab\Migration\Event\Activation;
+use PinkCrab\Perique\Migration\Event\Activation;
 use PinkCrab\Perique\Application\App;
-use PinkCrab\Migration\Migration;
+use PinkCrab\Perique\Migration\Migration;
 
 
 class Migrations {
@@ -100,7 +100,7 @@ class Migrations {
 	 */
 	public function add_migration( $migration ): self {
 		if ( ! is_subclass_of( $migration, Migration::class ) ) {
-			throw Migration_Exception::none_migration_type( print_r( $migration, true ) ); //phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_print_r, used for exception messages
+			throw Migration_Exception::none_migration_type( \serialize( $migration ) ); //phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.serialize_serialize, used for exception messages
 		}
 
 		$migration = $this->maybe_construct_migration( $migration );

@@ -5,16 +5,16 @@ declare(strict_types=1);
 /**
  * A DI Container which lets you set the return of calling create()
  *
- * @package PinkCrab\Test_Helpers
+ * @package PinkCrab\Perique\Migration
  * @author Glynn Quelch glynn@pinkcrab.co.uk
  * @since 0.0.1
  */
 
-namespace PinkCrab\Perique\Migration\Tests\Helpers;
+namespace PinkCrab\Perique\Migration\Tests\Fixtures\Data_Providers;
 
 use PinkCrab\Perique\Interfaces\DI_Container;
 
-class Mockable_DI_Container implements DI_Container {
+class Null_DI_Container implements DI_Container {
 	public $returns = null;
 
 	public function __construct( $returns = null ) {
@@ -32,4 +32,4 @@ class Mockable_DI_Container implements DI_Container {
 	}
 	public function get( $id ) {}
 	public function has( $id ) {}
-};
+}

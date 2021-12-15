@@ -9,17 +9,17 @@ declare(strict_types=1);
  * @author GLynn Quelch <glynn.quelch@gmail.com>
  */
 
-namespace PinkCrab\Migration\Tests\Unit\Migration\Event;
+namespace PinkCrab\Perique\Migration\Tests\Unit\Migration\Event;
 
 use WP_UnitTestCase;
-use PinkCrab\Migration\Event\Activation;
+use PinkCrab\Perique\Migration\Event\Activation;
 use PinkCrab\Table_Builder\Engines\Engine;
 use PinkCrab\DB_Migration\Migration_Manager;
-use PinkCrab\Migration\Tests\Helpers\Logable_WPDB;
-use PinkCrab\Migration\Tests\Fixtures\Has_Seeds_Migration;
-use PinkCrab\Migration\Tests\Fixtures\Simple_Table_Migration;
-use PinkCrab\Migration\Tests\Fixtures\Has_Seeds_Migration_But_Disabled;
-use PinkCrab\Migration\Tests\Fixtures\Data_Providers\Migration_Manager_Provider;
+use PinkCrab\Perique\Migration\Tests\Helpers\Logable_WPDB;
+use PinkCrab\Perique\Migration\Tests\Fixtures\Has_Seeds_Migration;
+use PinkCrab\Perique\Migration\Tests\Fixtures\Simple_Table_Migration;
+use PinkCrab\Perique\Migration\Tests\Fixtures\Has_Seeds_Migration_But_Disabled;
+use PinkCrab\Perique\Migration\Tests\Fixtures\Data_Providers\Migration_Manager_Provider;
 
 class Test_Activation extends WP_UnitTestCase {
 

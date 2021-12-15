@@ -5,15 +5,15 @@ declare(strict_types=1);
 /**
  * Abstract class for all Migrations
  *
- * @package PinkCrab\Migration\Plugin_Lifecycle
+ * @package PinkCrab\Perique\Migration\Plugin_Lifecycle
  * @author Glynn Quelch glynn@pinkcrab.co.uk
  * @since 0.0.1
  */
 
-namespace PinkCrab\Migration\Event;
+namespace PinkCrab\Perique\Migration\Event;
 
 use PinkCrab\DB_Migration\Migration_Manager;
-use PinkCrab\Migration\Migration;
+use PinkCrab\Perique\Migration\Migration;
 use PinkCrab\Plugin_Lifecycle\State_Event\Activation as State_Events_Activation;
 
 

@@ -5,3 +5,7 @@ coverage.xml
 clover.xml
 /coverage-report
 plugin.php
+
+#vscode
+.vscode
+workspace.code-workspace

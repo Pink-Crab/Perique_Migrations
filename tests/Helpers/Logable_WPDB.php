@@ -10,7 +10,7 @@ declare(strict_types=1);
  * @since 0.0.1
  */
 
-namespace PinkCrab\Migration\Tests\Helpers;
+namespace PinkCrab\Perique\Migration\Tests\Helpers;
 
 class Logable_WPDB extends \wpdb {
 
