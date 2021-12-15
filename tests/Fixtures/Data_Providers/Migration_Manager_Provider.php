@@ -5,12 +5,12 @@ declare(strict_types=1);
 /**
  * Provider for generating stubs and mock for the Migration Manager
  *
- * @package PinkCrab\Migration\Plugin_Lifecycle
+ * @package PinkCrab\Perique\Migration
  * @author Glynn Quelch glynn@pinkcrab.co.uk
  * @since 0.0.1
  */
 
-namespace PinkCrab\Migration\Tests\Fixtures\Data_Providers;
+namespace PinkCrab\Perique\Migration\Tests\Fixtures\Data_Providers;
 
 use PinkCrab\Table_Builder\Schema;
 use PinkCrab\Table_Builder\Builder;

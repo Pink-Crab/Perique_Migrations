@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /**
- * Mock class used for activation which writes to options table
+ * Mock migration that throws an exception on construct
  *
  * @package PinkCrab\Perique\Migration
  * @author Glynn Quelch glynn@pinkcrab.co.uk
@@ -15,11 +15,14 @@ namespace PinkCrab\Perique\Migration\Tests\Fixtures;
 use PinkCrab\Perique\Migration\Migration;
 use PinkCrab\Table_Builder\Schema;
 
+class Throws_On_Construct_Migration extends Migration {
 
+	public const TABLE_NAME = 'throw_on_con';
 
-class Simple_Table_Migration extends Migration {
-
-	public const TABLE_NAME = 'simple_table_migration';
+    public function __construct() {
+        throw new \Exception("Throws_On_Construct_Migration");
+        
+    }
 
 	protected function table_name(): string {
 		return self::TABLE_NAME;

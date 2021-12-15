@@ -13,13 +13,13 @@
     }],
     "autoload": {
         "psr-4": {
-            "PinkCrab\\Migration\\": "src/"
+            "PinkCrab\\Perique\\Migration\\": "src/"
         },
         "files": []
     },
     "autoload-dev": {
         "psr-4": {
-            "PinkCrab\\Migration\\Tests\\": "tests/"
+            "PinkCrab\\Perique\\Migration\\Tests\\": "tests/"
         }
     },
     "require-dev": {

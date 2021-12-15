@@ -12,7 +12,7 @@ declare(strict_types=1);
  * @package PinkCrab\Test_Helpers
  */
 
-namespace PinkCrab\Migration\Tests\Helpers;
+namespace PinkCrab\Perique\Migration\Tests\Helpers;
 
 use PinkCrab\Perique\Application\App;
 use Gin0115\WPUnit_Helpers\Objects;

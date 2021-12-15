@@ -9,17 +9,21 @@ declare(strict_types=1);
  * @author GLynn Quelch <glynn.quelch@gmail.com>
  */
 
-namespace PinkCrab\Migration\Tests\Unit\Migration;
+namespace PinkCrab\Perique\Migration\Tests\Unit\Migration;
 
+use stdClass;
 use WP_UnitTestCase;
-use PinkCrab\Migration\Migrations;
 use Gin0115\WPUnit_Helpers\Objects;
+use PinkCrab\Perique\Migration\Migrations;
 use PinkCrab\DB_Migration\Migration_Manager;
 use PinkCrab\Perique\Application\App_Factory;
-use PinkCrab\Migration\Tests\Helpers\App_Helper_Trait;
+use PinkCrab\Perique\Migration\Migration_Exception;
 use PinkCrab\Plugin_Lifecycle\Plugin_State_Controller;
-use PinkCrab\Migration\Tests\Fixtures\Has_Seeds_Migration;
-use PinkCrab\Migration\Tests\Fixtures\Simple_Table_Migration;
+use PinkCrab\Perique\Migration\Tests\Helpers\App_Helper_Trait;
+use PinkCrab\Perique\Migration\Tests\Fixtures\Has_Seeds_Migration;
+use PinkCrab\Perique\Migration\Tests\Fixtures\Simple_Table_Migration;
+use PinkCrab\Perique\Migration\Tests\Fixtures\Throws_On_Construct_Migration;
+use PinkCrab\Perique\Migration\Tests\Fixtures\Data_Providers\Null_DI_Container;
 
 class Test_Migrations extends WP_UnitTestCase {
 
@@ -104,7 +108,72 @@ class Test_Migrations extends WP_UnitTestCase {
 		$this->assertInstanceOf( Migration_Manager::class, Objects::get_property( $migrations, 'migration_manager' ) );
 	}
 
-    /** @testdox When a migration manager is defined, the fallback should not be set when calling done() */
+	/** @testdox Attempting to pass a string which is not a valid Migration object, should throw an exception */
+	public function test_throws_exception_if_none_migration_class_passed(): void {
+		$migrations = new Migrations( self::$plugin_state_controller );
+
+		$this->expectException( Migration_Exception::class );
+		$this->expectDeprecationMessage( 'Migration::class instance or class name expected, got O:8:"stdClass":0:{}' );
+		$this->expectExceptionCode( 102 );
+		$migrations->add_migration( new stdClass() );
+	}
+
+	/** @testdox Attempting to pass a string which is not a valid Migration class name, should throw an exception */
+	public function test_throws_exception_if_none_migration_class_string_passed(): void {
+		$migrations = new Migrations( self::$plugin_state_controller );
+
+		$this->expectException( Migration_Exception::class );
+		$this->expectExceptionCode( 102 );
+		$this->expectDeprecationMessage( 'Migration::class instance or class name expected, got s:11:"SOME STRING"' );
+		$migrations->add_migration( 'SOME STRING' );
+	}
+
+	/** @testdox Attempting to pass none object or class string, should throw an exception */
+	public function test_throws_exception_if_invalid_type_passed(): void {
+		$migrations = new Migrations( self::$plugin_state_controller );
+
+		$this->expectException( Migration_Exception::class );
+		$this->expectDeprecationMessage( 'Migration::class instance or class name expected, got a:1:{i:0;a:1:{i:0;i:1;}}' );
+		$this->expectExceptionCode( 102 );
+		$migrations->add_migration( array( array( 1 ) ) );
+	}
+
+	/** @testdox Any exception or errors generated while constructing a migration instance via the DI Container. This should be caught and re thrown as a Migration Exception. */
+	public function test_rethrow_migration_exception_if_exception_caught_creating_instance(): void {
+		$migrations = new Migrations( self::$plugin_state_controller );
+
+		$this->expectException( Migration_Exception::class );
+		$this->expectDeprecationMessage( 'Failed to construct ' . Throws_On_Construct_Migration::class . ' using the DI Container' );
+		$this->expectExceptionCode( 101 );
+
+		$migrations->add_migration( Throws_On_Construct_Migration::class );
+	}
+
+	public function test_throw_exception_if_null_is_returned_from_constructing_migration(): void {
+		$migrations = new Migrations( self::$plugin_state_controller );
+		Objects::set_property( $migrations, 'di_container', new Null_DI_Container() );
+
+		$this->expectException( Migration_Exception::class );
+		$this->expectDeprecationMessage( 'Failed to construct Invalid after construction using the DI Container' );
+		$this->expectExceptionCode( 101 );
+
+		$migrations->add_migration( Simple_Table_Migration::class );
+	}
+
+	public function test_throw_exception_if_wrong_type_is_returned_from_constructing_migration(): void {
+		$migrations         = new Migrations( self::$plugin_state_controller );
+		$container          = new Null_DI_Container();
+		$container->returns = new stdClass();
+		Objects::set_property( $migrations, 'di_container', $container );
+
+		$this->expectException( Migration_Exception::class );
+		$this->expectDeprecationMessage( 'Failed to construct Invalid after construction using the DI Container' );
+		$this->expectExceptionCode( 101 );
+
+		$migrations->add_migration( Simple_Table_Migration::class );
+	}
+
+	/** @testdox When a migration manager is defined, the fallback should not be set when calling done() */
 	public function test_custom_migration_manager_instance(): void {
 		$migrations = new Migrations( self::$plugin_state_controller );
 

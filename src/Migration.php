@@ -5,12 +5,12 @@ declare(strict_types=1);
 /**
  * Abstract class for all Migrations
  *
- * @package PinkCrab\Migration\Plugin_Lifecycle
+ * @package PinkCrab\Perique\Migration\Plugin_Lifecycle
  * @author Glynn Quelch glynn@pinkcrab.co.uk
  * @since 0.0.1
  */
 
-namespace PinkCrab\Migration;
+namespace PinkCrab\Perique\Migration;
 
 use PinkCrab\DB_Migration\Database_Migration;
 use PinkCrab\Table_Builder\Schema;

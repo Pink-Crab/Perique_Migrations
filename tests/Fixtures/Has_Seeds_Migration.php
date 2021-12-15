@@ -5,14 +5,14 @@ declare(strict_types=1);
 /**
  * Mock class used for activation which writes to options table
  *
- * @package PinkCrab\Migration
+ * @package PinkCrab\Perique\Migration
  * @author Glynn Quelch glynn@pinkcrab.co.uk
  * @since 0.0.1
  */
 
-namespace PinkCrab\Migration\Tests\Fixtures;
+namespace PinkCrab\Perique\Migration\Tests\Fixtures;
 
-use PinkCrab\Migration\Migration;
+use PinkCrab\Perique\Migration\Migration;
 use PinkCrab\Table_Builder\Schema;
 
 class Has_Seeds_Migration extends Migration {
