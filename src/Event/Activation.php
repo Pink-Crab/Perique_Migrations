@@ -16,7 +16,6 @@ use PinkCrab\DB_Migration\Migration_Manager;
 use PinkCrab\Perique\Migration\Migration;
 use PinkCrab\Plugin_Lifecycle\State_Event\Activation as State_Events_Activation;
 
-
 class Activation implements State_Events_Activation {
 
 	/**
@@ -55,8 +54,9 @@ class Activation implements State_Events_Activation {
 	 * @return void
 	 */
 	private function seed_tables(): void {
-		$exclude = $this->tables_to_exclude_from_seeding();
-		$this->migration_manager->seed_tables( ...$exclude );
+		$this->migration_manager->seed_tables(
+			...$this->tables_to_exclude_from_seeding()
+		);
 	}
 
 	/**

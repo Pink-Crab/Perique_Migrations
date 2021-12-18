@@ -37,6 +37,13 @@ class Migration_Manager_Provider {
 				$this->events['drop'][] = $schema;
 				return true;
 			}
+			public function create_table_query( Schema $schema ): string {
+				return 'noop';
+			}
+			public function drop_table_query( Schema $schema ): string {
+				$this->events['drop'][] = $schema;
+				return 'noop';
+			}
 		};
 		$builder = new Builder( $engine );
 
