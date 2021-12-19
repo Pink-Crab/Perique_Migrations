@@ -45,14 +45,13 @@ class Test_Deactivation extends WP_UnitTestCase {
 		$migration_c = new Drop_On_Deactivation_Migration(); 	  // Do drop (explicit)
 		$migration_manager->add_migration( $migration_a );
 		$migration_manager->add_migration( $migration_b );
+		$migration_manager->add_migration( $migration_c );
 
 		$activation_event = new Deactivation( $migration_manager );
 		$activation_event->run();
 
 		$this->assertCount( 1, $engine->events['drop'] );
-		$this->assertNotContains( $migration_a::TABLE_NAME, $engine->events['create'][1]->get_table_name() );
-		$this->assertNotContains( $migration_b::TABLE_NAME, $engine->events['create'][1]->get_table_name() );
-		$this->assertContains( $migration_c::TABLE_NAME, $engine->events['create'][0]->get_table_name() );
+		$this->assertContains( $migration_c::TABLE_NAME, $engine->events['drop'][0]->get_table_name() );
 	}
 
 }
