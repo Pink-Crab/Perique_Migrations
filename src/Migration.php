@@ -58,15 +58,4 @@ abstract class Migration extends Database_Migration {
 	public function seed_on_inital_activation(): bool {
 		return true;
 	}
-
-	/**
-	 * Should this migration be created on activation.
-	 *
-	 * Defaults to true.
-	 *
-	 * @return bool
-	 */
-	public function create_on_inital_activation(): bool {
-		return true;
-	}
 }
