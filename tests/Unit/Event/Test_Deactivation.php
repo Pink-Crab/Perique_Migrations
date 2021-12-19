@@ -53,5 +53,4 @@ class Test_Deactivation extends WP_UnitTestCase {
 		$this->assertCount( 1, $engine->events['drop'] );
 		$this->assertContains( $migration_c::TABLE_NAME, $engine->events['drop'][0]->get_table_name() );
 	}
-
 }

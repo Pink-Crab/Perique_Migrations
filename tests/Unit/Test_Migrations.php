@@ -102,6 +102,7 @@ class Test_Migrations extends WP_UnitTestCase {
 	public function test_migration_manager_added_at_done_if_not_set(): void {
 		$migrations = new Migrations( self::$plugin_state_controller );
 		$this->assertNull( Objects::get_property( $migrations, 'migration_manager' ) );
+		$migrations->add_migration( Simple_Table_Migration::class );
 
 		// Run done, should see the migration manager set.
 		$migrations->done();

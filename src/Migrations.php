@@ -18,6 +18,7 @@ use PinkCrab\DB_Migration\Migration_Manager;
 use PinkCrab\Plugin_Lifecycle\Plugin_State_Controller;
 use PinkCrab\Perique\Migration\Event\Activation;
 use PinkCrab\Perique\Application\App;
+use PinkCrab\Perique\Migration\Event\Deactivation;
 use PinkCrab\Perique\Migration\Migration;
 
 
@@ -129,8 +130,8 @@ class Migrations {
 		}
 
 		return is_object( $migration ) && is_a( $migration, Migration::class )
-			? $migration
-			: null;
+		? $migration
+		: null;
 	}
 
 	/**
@@ -139,28 +140,62 @@ class Migrations {
 	 * @return self
 	 */
 	public function done(): self {
+		// Bail if no migrations.
+		if ( 0 === count( $this->get_migrations() ) ) {
+			return $this;
+		}
+
 		// Set with a fallback Migration Manager if not set.
 		if ( null === $this->migration_manager ) {
 			$this->migration_manager = Factory::manager_with_db_delta( $this->migration_log_key );
 		}
+
+		// Register all migrations and hooks.
+		$this->populate_migration_manager();
+		$this->set_activation_calls();
+		$this->set_deactivation_calls();
+
 		return $this;
+	}
+
+	/**
+	 * Populates the migration with all migrations.
+	 *
+	 * @return void
+	 */
+	private function populate_migration_manager(): void {
+		foreach ( $this->migrations as $migration ) {
+			$this->migration_manager->add_migration( $migration );
+		}
 	}
 
 
 	/**
 	 * Registers all actions to carry out on activation.
 	 *
-	 * @param Migration[] $migrations
 	 * @return void
 	 */
-	public function set_activation_calls( array $migrations ): void {
+	private function set_activation_calls(): void {
+		$this->plugin_state_controller->event( new Activation( $this->migration_manager ) );
+	}
 
-		$migration_manager = $this->migration_manager;
-		foreach ( $migrations as $migration ) {
-			$migration_manager->add_migration( $migration );
+	/**
+	 * Registers the deactivation hook if any migrations are set to drop on
+	 * deactivation.
+	 *
+	 * @return void
+	 */
+	private function set_deactivation_calls(): void {
+		// Check we have valid deactivation calls.
+		$drop_on_deactivation_migrations = array_filter(
+			$this->migrations,
+			function( Migration $migration ): bool {
+				return $migration->drop_on_deactivation() === true;
+			}
+		);
+		if ( count( $drop_on_deactivation_migrations ) >= 1 ) {
+			$this->plugin_state_controller->event( new Deactivation( $this->migration_manager ) );
 		}
-		$this->plugin_state_controller->event( new Activation( $migration_manager ) );
-
 	}
 
 	/**
