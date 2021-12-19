@@ -80,22 +80,22 @@ class Test_Manually_Called_Lifecylce_Events extends WP_UnitTestCase {
         // CREATE WITH NO SEEDED DATA 
 		$simple_table_columns = self::$wpdb->get_results( "SHOW COLUMNS FROM {$migration_a->get_table_name()};" );
 		$this->assertCount( 2, $simple_table_columns );
-		$this->assertSame( array( 'id', 'user' ), array_map( Func\getProperty( 'Field' ), $simple_table_columns ), );
+		$this->assertSame( array( 'id', 'user' ), array_map( Func\getProperty( 'Field' ), $simple_table_columns ) );
 		$simple_table_rows = self::$wpdb->get_results( "SELECT * FROM {$migration_a->get_table_name()};" );
 		$this->assertCount( 0, $simple_table_rows );
 
         // CREATE WITH SEEDED DATA
 		$has_seeds_columns = self::$wpdb->get_results( "SHOW COLUMNS FROM {$migration_b->get_table_name()};" );
 		$this->assertCount( 2, $has_seeds_columns );
-		$this->assertSame( array( 'id', 'user' ), array_map( Func\getProperty( 'Field' ), $has_seeds_columns ), );
+		$this->assertSame( array( 'id', 'user' ), array_map( Func\getProperty( 'Field' ), $has_seeds_columns ) );
 		$has_seeds_rows = self::$wpdb->get_results( "SELECT * FROM {$migration_b->get_table_name()};" );
 		$this->assertCount( 2, $has_seeds_rows );
-		$this->assertSame( array( 'Alpha', 'Bravo' ), array_map( Func\getProperty( 'user' ), $has_seeds_rows ), );
+		$this->assertSame( array( 'Alpha', 'Bravo' ), array_map( Func\getProperty( 'user' ), $has_seeds_rows ) );
 
         // CREATE WITH SEED DATA, BUT TOLD TO IGNORE
 		$has_but_ignored_seeds_columns = self::$wpdb->get_results( "SHOW COLUMNS FROM {$migration_c->get_table_name()};" );
 		$this->assertCount( 2, $has_but_ignored_seeds_columns );
-		$this->assertSame( array( 'bar', 'foo' ), array_map( Func\getProperty( 'Field' ), $has_but_ignored_seeds_columns ), );
+		$this->assertSame( array( 'bar', 'foo' ), array_map( Func\getProperty( 'Field' ), $has_but_ignored_seeds_columns ) );
 		$has_but_ignored_seeds_rows = self::$wpdb->get_results( "SELECT * FROM {$migration_c->get_table_name()};" );
 		$this->assertCount( 0, $has_but_ignored_seeds_rows );
 	}
