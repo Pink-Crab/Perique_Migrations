@@ -18,12 +18,14 @@ use PinkCrab\Perique\Migration\Migrations;
 use PinkCrab\DB_Migration\Migration_Manager;
 use PinkCrab\Perique\Application\App_Factory;
 use PinkCrab\Perique\Migration\Event\Activation;
+use PinkCrab\Perique\Migration\Event\Deactivation;
 use PinkCrab\Perique\Migration\Migration_Exception;
 use PinkCrab\Plugin_Lifecycle\Plugin_State_Controller;
 use PinkCrab\Perique\Migration\Tests\Helpers\App_Helper_Trait;
 use PinkCrab\Perique\Migration\Tests\Fixtures\Has_Seeds_Migration;
 use PinkCrab\Perique\Migration\Tests\Fixtures\Simple_Table_Migration;
 use PinkCrab\Perique\Migration\Tests\Fixtures\Throws_On_Construct_Migration;
+use PinkCrab\Perique\Migration\Tests\Fixtures\Drop_On_Deactivation_Migration;
 use PinkCrab\Perique\Migration\Tests\Fixtures\Data_Providers\Null_DI_Container;
 
 class Test_Migrations extends WP_UnitTestCase {
@@ -202,6 +204,24 @@ class Test_Migrations extends WP_UnitTestCase {
 		$this->assertInstanceOf( Activation::class, $events[0] );
 		$this->assertArrayHasKey( $table::TABLE_NAME, $migration_manager->get_migrations() );
 		$this->assertSame( $table, $migration_manager->get_migrations()[ $table::TABLE_NAME ] );
+	}
+
+	/** @testdox When migrations are added, an deactivation event should be registered with the PLugin State Controller to handle the activation hook handling. */
+	public function test_plugin_deactivation_event_changes_created(): void {
+		$migrations = new Migrations( self::$plugin_state_controller );
+		$table      = new Drop_On_Deactivation_Migration();
+		$migrations->add_migration( $table );
+		$migrations->done();
+
+		$events = Objects::get_property( self::$plugin_state_controller, 'state_events' );
+		$this->assertCount( 2, $events );
+		$this->assertSame(
+			Objects::get_property( $events[0], 'migration_manager' ),
+			Objects::get_property( $events[1], 'migration_manager' )
+		);
+
+		$this->assertInstanceOf( Activation::class, $events[0] );
+		$this->assertInstanceOf( Deactivation::class, $events[1] );
 	}
 
 
