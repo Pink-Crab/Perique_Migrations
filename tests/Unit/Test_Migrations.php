@@ -17,6 +17,7 @@ use Gin0115\WPUnit_Helpers\Objects;
 use PinkCrab\Perique\Migration\Migrations;
 use PinkCrab\DB_Migration\Migration_Manager;
 use PinkCrab\Perique\Application\App_Factory;
+use PinkCrab\Perique\Migration\Event\Activation;
 use PinkCrab\Perique\Migration\Migration_Exception;
 use PinkCrab\Plugin_Lifecycle\Plugin_State_Controller;
 use PinkCrab\Perique\Migration\Tests\Helpers\App_Helper_Trait;
@@ -186,7 +187,21 @@ class Test_Migrations extends WP_UnitTestCase {
 		// Should not be set when running done as already set.
 		$migrations->done();
 		$this->assertSame( $mock_manager, Objects::get_property( $migrations, 'migration_manager' ) );
+	}
 
+	/** @testdox When migrations are added, an activation event should be registered with the PLugin State Controller to handle the activation hook handling. */
+	public function test_plugin_activation_event_changes_created(): void {
+		$migrations = new Migrations( self::$plugin_state_controller );
+		$table      = new Simple_Table_Migration();
+		$migrations->add_migration( $table );
+		$migrations->done();
+
+		$events            = Objects::get_property( self::$plugin_state_controller, 'state_events' );
+		$migration_manager = Objects::get_property( $events[0], 'migration_manager' );
+
+		$this->assertInstanceOf( Activation::class, $events[0] );
+		$this->assertArrayHasKey( $table::TABLE_NAME, $migration_manager->get_migrations() );
+		$this->assertSame( $table, $migration_manager->get_migrations()[ $table::TABLE_NAME ] );
 	}
 
 
