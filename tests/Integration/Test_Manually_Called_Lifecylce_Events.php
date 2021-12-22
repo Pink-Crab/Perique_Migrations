@@ -13,14 +13,18 @@ namespace PinkCrab\Perique\Migration\Tests\Integration;
 
 use WP_UnitTestCase;
 use Gin0115\WPUnit_Helpers\Output;
+use Gin0115\WPUnit_Helpers\Objects;
 use PinkCrab\Perique\Migration\Migrations;
 use PinkCrab\Perique\Application\App_Factory;
+use PinkCrab\Plugin_Lifecycle\State_Change_Queue;
 use PinkCrab\Plugin_Lifecycle\Plugin_State_Controller;
 use PinkCrab\Perique\Migration\Tests\Helpers\App_Helper_Trait;
 use PinkCrab\Perique\Migration\Tests\Fixtures\Has_Seeds_Migration;
 use PinkCrab\Perique\Migration\Tests\Fixtures\Simple_Table_Migration;
 use function PinkCrab\FunctionConstructors\GeneralFunctions\getProperty;
+use PinkCrab\Perique\Migration\Tests\Fixtures\Drop_On_Uninstall_Migration;
 use PinkCrab\Perique\Migration\Tests\Fixtures\Drop_On_Deactivation_Migration;
+use PinkCrab\Perique\Migration\Tests\Fixtures\No_Drop_On_Uninstall_Migration;
 use PinkCrab\Perique\Migration\Tests\Fixtures\Has_Seeds_Migration_But_Disabled;
 use PinkCrab\Perique\Migration\Tests\Fixtures\Not_Drop_On_Deactivation_Migration;
 
@@ -137,6 +141,55 @@ class Test_Manually_Called_Lifecylce_Events extends WP_UnitTestCase {
 		$b_post_deactivation = self::$wpdb->get_results( "SHOW COLUMNS FROM {$migration_b->get_table_name()};" );
 		$this->assertEmpty( $a_post_deactivation ); // dropped
 		$this->assertNotEmpty( $b_post_deactivation ); // not dropped
+	}
+
+	public function test_drop_tables_on_uninstall(): void {
+		// Create migrations and state controller.
+		$plugin_state_controller = new Plugin_State_Controller( self::$app_instance, __FILE__ );
+		$migrations              = new Migrations( $plugin_state_controller, 'test_drop_tables_on_uninstall' );
+
+		// Populate the migrations
+		$migration_a = new Drop_On_Uninstall_Migration();     // Does Drop
+		$migration_b = new No_Drop_On_Uninstall_Migration();  // Does not drop
+		$migrations->add_migration( $migration_a );
+		$migrations->add_migration( $migration_b );
+
+		$migrations->done();
+		// dump(get_option('test_drop_tables_on_uninstall'));
+		$plugin_state_controller->finalise();
+
+		// Run mock plugin activation to create
+		\do_action( 'activate_' . ltrim( __FILE__, '/' ) );
+
+		// Check we have both tables.
+		$a_post_activation = self::$wpdb->get_results( "SHOW COLUMNS FROM {$migration_a->get_table_name()};" );
+		$b_post_activation = self::$wpdb->get_results( "SHOW COLUMNS FROM {$migration_b->get_table_name()};" );
+		if ( empty( $a_post_activation ) || empty( $b_post_activation ) ) {
+			$this->fail( 'Failed to create mock table to drop for test' );
+		}
+
+		// Check the migration log was created.
+		if ( false === get_option( 'test_drop_tables_on_uninstall' ) ) {
+			$this->fail( 'Failed to create migration log for tests.' );
+		}
+
+		// Check the plugins uninstall class has been added to the option for uninstalling.
+		$plugins_with_uninstall = \get_option( 'uninstall_plugins' );
+		$this->assertArrayHasKey( ltrim( __FILE__, '/' ), $plugins_with_uninstall );
+		$this->assertInstanceOf( State_Change_Queue::class, $plugins_with_uninstall[ ltrim( __FILE__, '/' ) ] );
+
+		// Mock calling the uninstall process.
+		$event = $plugins_with_uninstall[ ltrim( __FILE__, '/' ) ];
+		$event->__invoke();
+
+		// Check correct tables dropped.
+		$a_post_deactivation = self::$wpdb->get_results( "SHOW COLUMNS FROM {$migration_a->get_table_name()};" );
+		$b_post_deactivation = self::$wpdb->get_results( "SHOW COLUMNS FROM {$migration_b->get_table_name()};" );
+		$this->assertEmpty( $a_post_deactivation ); // dropped
+		$this->assertNotEmpty( $b_post_deactivation ); // not dropped
+
+		// Check the migration log was cleared.
+		$this->assertFalse( get_option( 'test_drop_tables_on_uninstall' ) );
 	}
 
 

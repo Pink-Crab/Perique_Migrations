@@ -52,4 +52,22 @@ class Logable_WPDB extends \wpdb {
 
 		return $this->then_return;
 	}
+
+	/**
+	 * Logs any get_results call.
+	 *
+	 * NATIVE RETURN >> array|object|null Database query results.
+	 *
+	 * @param string $query  SQL query.
+	 * @param string $output Optional. Any of ARRAY_A | ARRAY_N | OBJECT | OBJECT_K 
+	 * @return mixed
+	 */
+	public function get_results( $query = null, $output = OBJECT ) {
+		$this->usage_log['get_results'][] = array(
+			'query'  => $query,
+			'output' => $output,
+		);
+
+		return $this->then_return;
+	}
 };

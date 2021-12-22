@@ -19,6 +19,7 @@ use PinkCrab\Plugin_Lifecycle\Plugin_State_Controller;
 use PinkCrab\Perique\Migration\Event\Activation;
 use PinkCrab\Perique\Application\App;
 use PinkCrab\Perique\Migration\Event\Deactivation;
+use PinkCrab\Perique\Migration\Event\Uninstall;
 use PinkCrab\Perique\Migration\Migration;
 
 
@@ -154,6 +155,7 @@ class Migrations {
 		$this->populate_migration_manager();
 		$this->set_activation_calls();
 		$this->set_deactivation_calls();
+		$this->set_uninstall_calls();
 
 		return $this;
 	}
@@ -169,6 +171,14 @@ class Migrations {
 		}
 	}
 
+	/**
+	 * Get all migrations
+	 *
+	 * @return Migration[]
+	 */
+	public function get_migrations(): array {
+		return $this->migrations;
+	}
 
 	/**
 	 * Registers all actions to carry out on activation.
@@ -199,11 +209,36 @@ class Migrations {
 	}
 
 	/**
-	 * Get all migrations
+	 * Registers the uninstall hook if any migrations are set to drop on
+	 * uninstall.
 	 *
-	 * @return Migration[]
+	 * @return void
 	 */
-	public function get_migrations(): array {
-		return $this->migrations;
+	private function set_uninstall_calls(): void {
+		// Check we have valid uninstall calls.
+		$drop_on_uninstall_migrations = array_filter(
+			$this->migrations,
+			function( Migration $migration ): bool {
+				return $migration->drop_on_uninstall() === true;
+			}
+		);
+		if ( count( $drop_on_uninstall_migrations ) >= 1 ) {
+			// Get all table names to be dropped.
+			$table_names = \array_map(
+				function( Migration $migration ): string {
+					return $migration->get_table_name();
+				},
+				$drop_on_uninstall_migrations
+			);
+
+			// Register the uninstall event.
+			$this->plugin_state_controller->event(
+				new Uninstall(
+					$table_names,
+					$this->migration_manager->migation_log()->get_log_key()
+				)
+			);
+		}
 	}
+
 }
