@@ -71,13 +71,7 @@ class Uninstall implements State_Events_Uninstall {
 		$wpdb->suppress_errors( true );
 
 		foreach ( $this->tables as $table ) {
-			try {
-				$query = "DROP TABLE IF EXISTS {$table}";
-				$wpdb->get_results( $query ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
-			} catch ( \Throwable $th ) {
-				// Suppress any errors.
-				continue;
-			}
+			$wpdb->get_results( "DROP TABLE IF EXISTS {$table}" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		}
 
 		// Reset warnings to initial state.

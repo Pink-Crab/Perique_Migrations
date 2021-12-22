@@ -12,8 +12,6 @@ declare(strict_types=1);
 namespace PinkCrab\Perique\Migration\Tests\Integration;
 
 use WP_UnitTestCase;
-use Gin0115\WPUnit_Helpers\Output;
-use Gin0115\WPUnit_Helpers\Objects;
 use PinkCrab\Perique\Migration\Migrations;
 use PinkCrab\Perique\Application\App_Factory;
 use PinkCrab\Plugin_Lifecycle\State_Change_Queue;
@@ -143,6 +141,7 @@ class Test_Manually_Called_Lifecylce_Events extends WP_UnitTestCase {
 		$this->assertNotEmpty( $b_post_deactivation ); // not dropped
 	}
 
+    /** @testdox [INT] It should be possible to set up migrations that will either be dropped or left when unistalling the plugin. As under the hood this uses the WPDB migrations module, the migration log should also be removed.*/
 	public function test_drop_tables_on_uninstall(): void {
 		// Create migrations and state controller.
 		$plugin_state_controller = new Plugin_State_Controller( self::$app_instance, __FILE__ );
@@ -155,7 +154,6 @@ class Test_Manually_Called_Lifecylce_Events extends WP_UnitTestCase {
 		$migrations->add_migration( $migration_b );
 
 		$migrations->done();
-		// dump(get_option('test_drop_tables_on_uninstall'));
 		$plugin_state_controller->finalise();
 
 		// Run mock plugin activation to create
