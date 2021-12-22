@@ -49,38 +49,38 @@ class Acme_Migration extends Migration{
      * @return string Table name
      */
     protected function table_name(): string {
-		return 'acme_migration_sample_table';
-	}
+        return 'acme_migration_sample_table';
+    }
 
-	/**
-	 * Defines the schema for the migration.
-	 *
-	 * @param Schema $schema_config
-	 * @return void
-	 */
-	public function schema( Schema $schema_config ): void {
-		$schema_config->column( 'id' )
+    /**
+     * Defines the schema for the migration.
+     *
+     * @param Schema $schema_config
+     * @return void
+     */
+    public function schema( Schema $schema_config ): void {
+    $schema_config->column( 'id' )
             ->unsigned_int( 11 )
             ->auto_increment();
-		
+    
         $schema_config->column( 'user_ref' )
             ->text( 11 );
-		
+    
         $schema_config->column( 'thingy_ref' )
             ->int( 11 );
-		
+    
         $schema_config->index( 'id' )
             ->primary();
-	}
+    }
 
-	/**
-	 * Defines the data to be seeded.
-	 *
-	 * @param array<string, mixed> $seeds
-	 * @return array<string, mixed>
-	 */
-	public function seed( array $seeds ): array {
-		return [
+    /**
+     * Defines the data to be seeded.
+     *
+     * @param array<string, mixed> $seeds
+     * @return array<string, mixed>
+     */
+    public function seed( array $seeds ): array {
+    return [
             [
                 'user_ref'   => 'ghjuyitjkuiy'
                 'thingy_ref' => 1325546
@@ -90,7 +90,7 @@ class Acme_Migration extends Migration{
                 'thingy_ref' => 897456
             ]
         ];
-	}
+    }
 }
 ```
 
@@ -118,7 +118,8 @@ $migrations = new Migrations(
 // Add our migrations
 $migrations->add_migration(new Acme_Migration());
 
-// These can also be added as class names, which will then be constructed via Periques DI Container. Please see the Plugin Life Cycle for details of timings and limitations.
+// These can also be added as class names, which will then be constructed via Perique's DI Container. 
+//Please see the Plugin Life Cycle for details of timings and limitations.
 $migrations->add_migration(Some_Migration_With_Dependencies::class);
 
 ```
