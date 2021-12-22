@@ -32,5 +32,29 @@ As mentioned this library acts more of a bridge for the following packages.
 $ composer install pinkcrab/perique-migrations
 ```
 
+### Create the Migrations service
+
+The Migrations service is created using an instance of the Plugin Life Cycle service.  
+[Read more about Plugin Life Cycle](https://github.com/Pink-Crab/Perique_Plugin_Life_Cycle)
+
+```php
+// @file plugin.php
+
+// Boot the app as normal and create an instance of Plugin_State_Controller
+$app = (new App_Factory())
+    // Rest of Perique setup
+    ->boot();
+$plugin_state_controller = new Plugin_State_Controller($app, __FILE__);
+
+// Create instance of the Migrations instance
+$migrations = new Migrations(
+    $plugin_state_controller,
+    'acme_plugin_migrations' // Migration log key 
+);
+
+```
+
+### Creation of Migrations
+
 ## Change Log ##
 * 0.1.0 Inital version
