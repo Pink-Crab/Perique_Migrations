@@ -59,7 +59,7 @@ class Acme_Migration extends Migration{
      * @return void
      */
     public function schema( Schema $schema_config ): void {
-    $schema_config->column( 'id' )
+        $schema_config->column( 'id' )
             ->unsigned_int( 11 )
             ->auto_increment();
     
@@ -80,7 +80,7 @@ class Acme_Migration extends Migration{
      * @return array<string, mixed>
      */
     public function seed( array $seeds ): array {
-    return [
+        return [
             [
                 'user_ref'   => 'ghjuyitjkuiy'
                 'thingy_ref' => 1325546
@@ -94,6 +94,18 @@ class Acme_Migration extends Migration{
 }
 ```
 
+> Example of table using Perique App Config for table names.
+```php
+class Use_Dependency_Migration extends Migration{
+    protected $config;
+    public function __construct( App_Config $config ) {
+        $this->config = $config;
+    }
+    protected function table_name(): string {
+        return $this->config->db_tables('New Table');
+    }    
+}
+```
 
 ### Create the Migrations service
 
