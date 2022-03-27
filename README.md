@@ -57,6 +57,11 @@ $migrations->done();
 // Finalise the Plugin Life Cycle setup
 $plugin_state_controller->finalise();
 ```
+> Migrations can either be added as the class name or an instance. The Perique DI Container to used to construct the Migrations.
+
+## Migration Object
+
+Each migration must be created as an object, which extends the `PinkCrab\Perique\Migration\Migration` abstract class
 
 ## Change Log ##
 
