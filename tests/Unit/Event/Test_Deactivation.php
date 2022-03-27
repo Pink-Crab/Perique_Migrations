@@ -42,7 +42,7 @@ class Test_Deactivation extends WP_UnitTestCase {
 
 		$migration_a = new Simple_Table_Migration();              // Do not drop (default)
 		$migration_b = new Not_Drop_On_Deactivation_Migration();  // Do not drop (explicit)
-		$migration_c = new Drop_On_Deactivation_Migration(); 	  // Do drop (explicit)
+		$migration_c = new Drop_On_Deactivation_Migration();      // Do drop (explicit)
 		$migration_manager->add_migration( $migration_a );
 		$migration_manager->add_migration( $migration_b );
 		$migration_manager->add_migration( $migration_c );
@@ -51,6 +51,6 @@ class Test_Deactivation extends WP_UnitTestCase {
 		$activation_event->run();
 
 		$this->assertCount( 1, $engine->events['drop'] );
-		$this->assertContains( $migration_c::TABLE_NAME, $engine->events['drop'][0]->get_table_name() );
+		$this->assertStringContainsString( $migration_c::TABLE_NAME, $engine->events['drop'][0]->get_table_name() );
 	}
 }

@@ -12,9 +12,9 @@ declare(strict_types=1);
 namespace PinkCrab\Perique\Migration\Tests\Unit\Migration\Event;
 
 use WP_UnitTestCase;
-use PinkCrab\Perique\Migration\Event\Activation;
 use PinkCrab\Table_Builder\Engines\Engine;
 use PinkCrab\DB_Migration\Migration_Manager;
+use PinkCrab\Perique\Migration\Event\Activation;
 use PinkCrab\Perique\Migration\Tests\Helpers\Logable_WPDB;
 use PinkCrab\Perique\Migration\Tests\Fixtures\Has_Seeds_Migration;
 use PinkCrab\Perique\Migration\Tests\Fixtures\Simple_Table_Migration;
@@ -50,8 +50,8 @@ class Test_Activation extends WP_UnitTestCase {
 		$activation_event->run();
 
 		$this->assertCount( 2, $engine->events['create'] );
-		$this->assertContains( $migration_a::TABLE_NAME, $engine->events['create'][0]->get_table_name() );
-		$this->assertContains( $migration_b::TABLE_NAME, $engine->events['create'][1]->get_table_name() );
+		$this->assertStringContainsString( $migration_a::TABLE_NAME, $engine->events['create'][0]->get_table_name() );
+		$this->assertStringContainsString( $migration_b::TABLE_NAME, $engine->events['create'][1]->get_table_name() );
 	}
 
 	/** @testdox It should be possible to set data to be seeded on activation. There should also be a way to disable seeding, even if data is present too. */
