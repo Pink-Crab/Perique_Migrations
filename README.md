@@ -3,18 +3,19 @@
 A wrapper around various PinkCrab libraries which make it easier to run DB migrations from a plugin created using the Perique Framework.
 
 ![alt text](https://img.shields.io/badge/Current_Version-0.1.0-yellow.svg?style=flat " ")
+
 [![Open Source Love](https://badges.frapsoft.com/os/mit/mit.svg?v=102)]()![](https://github.com/Pink-Crab/Perique-Route/workflows/GitHub_CI/badge.svg " ")
 [![codecov](https://codecov.io/gh/Pink-Crab/Perique-Route/branch/master/graph/badge.svg?token=4yEceIaSFP)](https://codecov.io/gh/Pink-Crab/Perique-Route)
 
-## Version 0.1.0 ##
+# Version 0.1.0
 
 ****
 
-## Why? ##
+# Why?
 
 This Module for the PinkCrab [Perique](https://perique.info) plugin framework, allows for an easy way to implement Database Migrations which are triggered and handled whenever the plugin goes through various state changes.
 
-### Dependencies 
+## Dependencies 
 
 * [WPDB Migrations](https://github.com/Pink-Crab/WPDB_Migrations) 
 * [WPDB Table Builder](https://github.com/Pink-Crab/WPDB-Table-Builder)
@@ -24,7 +25,7 @@ This Module for the PinkCrab [Perique](https://perique.info) plugin framework, a
 
 ****
 
-## Setup ##
+# Setup
 
 To install, you can use composer
 
@@ -57,12 +58,71 @@ $migrations->done();
 // Finalise the Plugin Life Cycle setup
 $plugin_state_controller->finalise();
 ```
+
 > Migrations can either be added as the class name or an instance. The Perique DI Container to used to construct the Migrations.
 
-## Migration Object
+# Migration Object
 
 Each migration must be created as an object, which extends the `PinkCrab\Perique\Migration\Migration` abstract class
 
-## Change Log ##
+## Methods
+
+> ### table_name(): string  
+> @param PinkCrab\Table_Builder\Schema $schema_config  
+> @return void  
+> @required Abstract method. 
+
+Returns the table name that should be used to create the table with. If you wish to use WPDB prefix, it is suggested to use the `global $wpdb` instance (see Uninstall Notes)
+
+***
+
+> ### table_name(): string  
+> @return string  
+> @required Abstract method. 
+
+## Example Migration.
+
+> This creates a simple table with 2 columns (id and user), which will be populated with 2 users `Alpha` and `Bravo`
+
+
+```php
+class Example_Migration extends PinkCrab\Perique\Migration\Migration {
+
+    /** 
+     * Returns the table name used
+     * @return string 
+     */ 
+	protected function table_name(): string {
+		return 'has_seeds_migration';
+	}
+    
+	/**
+	 * Defines the schema for the migration.
+	 *
+	 * @param PinkCrab\Table_Builder\Schema $schema_config
+	 * @return void
+	 */
+	public function schema( PinkCrab\Table_Builder\Schema $schema_config ): void {
+		$schema_config->column( 'id' )->unsigned_int( 11 )->auto_increment();
+		$schema_config->column( 'user' )->text( 11 );
+		$schema_config->index( 'id' )->primary();
+	}
+
+	/**
+	 * Defines the data to be seeded.
+	 *
+	 * @param array<string, mixed> $seeds
+	 * @return array<string, mixed>
+	 */
+	public function seed( array $seeds ): array {
+		return array(
+            array( 'user' => 'Alpha' ),
+            array( 'user' => 'Bravo' ),
+        );
+	}
+}
+```
+
+## Change Log
 
 * 0.1.0-rc1 Inital BETA release.
