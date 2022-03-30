@@ -45,7 +45,7 @@ class Test_Migrations extends WP_UnitTestCase {
 	 * Sets up instance of Perique App
 	 * Only loaded with basic DI Rules.
 	 */
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 		self::$app_instance            = ( new App_Factory() )->with_wp_dice()->boot();
 		self::$plugin_state_controller = new Plugin_State_Controller( self::$app_instance, __FILE__ );
@@ -57,7 +57,7 @@ class Test_Migrations extends WP_UnitTestCase {
 	 *
 	 * @return void
 	 */
-	public function tearDown() {
+	public function tearDown(): void {
 		parent::tearDown();
 		$this->unset_app_instance();
 

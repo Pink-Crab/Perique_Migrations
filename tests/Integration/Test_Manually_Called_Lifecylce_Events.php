@@ -37,7 +37,7 @@ class Test_Manually_Called_Lifecylce_Events extends WP_UnitTestCase {
 	 * Sets up instance of Perique App
 	 * Only loaded with basic DI Rules.
 	 */
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 		self::$app_instance    = ( new App_Factory() )->with_wp_dice()->boot();
 		$GLOBALS['wp_filter']  = array();
@@ -51,7 +51,7 @@ class Test_Manually_Called_Lifecylce_Events extends WP_UnitTestCase {
 	 *
 	 * @return void
 	 */
-	public function tearDown() {
+	public function tearDown(): void {
 		parent::tearDown();
 		$this->unset_app_instance();
 
@@ -141,7 +141,7 @@ class Test_Manually_Called_Lifecylce_Events extends WP_UnitTestCase {
 		$this->assertNotEmpty( $b_post_deactivation ); // not dropped
 	}
 
-    /** @testdox [INT] It should be possible to set up migrations that will either be dropped or left when unistalling the plugin. As under the hood this uses the WPDB migrations module, the migration log should also be removed.*/
+	/** @testdox [INT] It should be possible to set up migrations that will either be dropped or left when unistalling the plugin. As under the hood this uses the WPDB migrations module, the migration log should also be removed.*/
 	public function test_drop_tables_on_uninstall(): void {
 		// Create migrations and state controller.
 		$plugin_state_controller = new Plugin_State_Controller( self::$app_instance, __FILE__ );
