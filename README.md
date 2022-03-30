@@ -94,7 +94,7 @@ class Acme_Migration extends Migration{
 }
 ```
 
-> Example of table using Perique App Config for table names.
+> Example of table using [Perique App Config](https://perique.info/core/App/app_config) for table names.
 ```php
 class Use_Dependency_Migration extends Migration{
     protected $config;
@@ -131,8 +131,15 @@ $migrations = new Migrations(
 $migrations->add_migration(new Acme_Migration());
 
 // These can also be added as class names, which will then be constructed via Perique's DI Container. 
-//Please see the Plugin Life Cycle for details of timings and limitations.
+// Please see the Plugin Life Cycle for details of timings and limitations.
 $migrations->add_migration(Some_Migration_With_Dependencies::class);
+
+// Once all migrations are added, the service need to be finalised.
+$migrations->done();
+
+// You can add any additional Plugin Life Cycle events, before finalising that also.
+$plugin_state_controller->event( new Some_Event( ));
+$plugin_state_controller->finalise();
 
 ```
 
