@@ -237,7 +237,7 @@ protected function table_name(): string {
  * @return void
  */
 abstract public function schema( Schema $schema_config ): void;
-    ```
+```
 
 ## Change Log ##
 
