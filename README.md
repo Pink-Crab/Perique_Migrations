@@ -38,6 +38,7 @@ $ composer require pinkcrab/perique-migrations
 To create database migrations, the `Migration` abstract class must be extended.
 
 > [Full Migration model references below](#migration-model)
+> [Example Plugin](https://github.com/gin0115/Perique_Migrations_Example)
 
 ```php
 class Acme_Migration extends Migration {
