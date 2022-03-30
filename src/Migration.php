@@ -18,7 +18,7 @@ use PinkCrab\Table_Builder\Schema;
 /**
  * Abstract class for all Migrations
  *
- * @method void schema(PinkCrab\Table_Builder\Schema $schema)
+ * @method void schema(\PinkCrab\Table_Builder\Schema $schema)
  */
 abstract class Migration extends Database_Migration {
 

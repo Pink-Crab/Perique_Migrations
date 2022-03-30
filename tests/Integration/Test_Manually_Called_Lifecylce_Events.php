@@ -152,7 +152,7 @@ class Test_Manually_Called_Lifecylce_Events extends WP_UnitTestCase {
 		$migration_b = new No_Drop_On_Uninstall_Migration();  // Does not drop 
 		$migrations->add_migration( $migration_a );
 		$migrations->add_migration( $migration_b );
-dump($migrations);
+
 		$migrations->done();
 		$plugin_state_controller->finalise();
 
