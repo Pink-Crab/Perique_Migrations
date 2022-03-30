@@ -258,8 +258,10 @@ Returns the data used to populate the table with. Should be returned as an array
  * @return array<int, array<string, mixed>>
  */
 public function array $seeds ): array {
-    $schema->column('id')->unsigned_int(12)->auto_increment();
-    // Define rest of schema
+    return [
+        ['columnA' => 'value1', 'columnB' => 1.11],
+        ['columnA' => 'value2', 'columnB' => 2.22],
+    ];
 }
 ```
 ## Change Log ##
