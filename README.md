@@ -222,6 +222,7 @@ protected function table_name(): string {
     return $this->config->db_tables('from_app_config');
 }  
 ```
+
 ***
 > ### schema( Schema $schema_config ): void
 > @param PinkCrab\Table_Builder\Schema $schema  
@@ -239,9 +240,28 @@ This allows for the definition of the tables schema. Please see the [WPDB Migrat
 public function schema( Schema $schema ): void{
     $schema->column('id')->unsigned_int(12)->auto_increment();
     // Define rest of schema
-};
+}
 ```
 
+***
+> ### seed( array $seeds ): array
+> @param array<int, array<string, mixed>> $seeds  
+> @return array<int, array<string, mixed>>
+
+Returns the data used to populate the table with. Should be returned as an array or arrays with matching column (key) and value pairs.
+
+```php
+/**
+ * Defines the schema for the migration.
+ *
+ * @param array<int, array<string, mixed>> $seeds  
+ * @return array<int, array<string, mixed>>
+ */
+public function array $seeds ): array {
+    $schema->column('id')->unsigned_int(12)->auto_increment();
+    // Define rest of schema
+}
+```
 ## Change Log ##
 
 * 0.1.0 Inital version
