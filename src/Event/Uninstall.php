@@ -17,6 +17,11 @@ use PinkCrab\Plugin_Lifecycle\State_Event\Uninstall as State_Events_Uninstall;
 class Uninstall implements State_Events_Uninstall {
 
 	/**
+	 * The Uninstall option key.
+	 */
+	public const UNINSTALL_KEY = 'perique_migrations_uninstall_args';
+
+	/**
 	 * Array of tables to be dropped.
 	 *
 	 * @var string[]
@@ -43,7 +48,17 @@ class Uninstall implements State_Events_Uninstall {
 	 */
 	public function __invoke(): void {
 		$this->run();
+	}
 
+	/**
+	 * The static callback method
+	 *
+	 * Creates instance of it self with args from options.
+	 *
+	 * @return self
+	 */
+	public static function callback(): self {
+		# code...
 	}
 
 	/**
