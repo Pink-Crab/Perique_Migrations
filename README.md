@@ -227,6 +227,7 @@ protected function table_name(): string {
 > ### schema( Schema $schema_config ): void
 > @param PinkCrab\Table_Builder\Schema $schema  
 > @return null
+> @required method
 
 This allows for the definition of the tables schema. Please see the [WPDB Migration](https://github.com/Pink-Crab/WP_DB_Migration) and [WPDB Table Builder](https://github.com/Pink-Crab/WPDB-Table-Builder) libraries for more details
 
