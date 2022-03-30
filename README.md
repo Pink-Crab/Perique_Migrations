@@ -8,7 +8,7 @@ A wrapper around various PinkCrab libraries which make it easier to run DB migra
 [![codecov](https://codecov.io/gh/Pink-Crab/Perique-Route/branch/master/graph/badge.svg?token=4yEceIaSFP)](https://codecov.io/gh/Pink-Crab/Perique-Route)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/Pink-Crab/Perique_Migrations/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/Pink-Crab/Perique_Migrations/?branch=master)
 
-# Version 0.1.0-RC2
+# Version 0.1.0
 
 ****
 
@@ -319,5 +319,6 @@ public function seed_on_inital_activation(): bool {
 
 ## Change Log
 
+* 0.1.0 - Docs added, sample project created.
 * 0.1.0-rc2 - Now uses [Perique Plugin Life Cycle 0.2](https://github.com/Pink-Crab/Perique_Plugin_Life_Cycle) and removes unneeded files when used as a lib via gitattributes
 * 0.1.0-rc1 Inital BETA release.
