@@ -197,7 +197,49 @@ class DI_Migration extends Migration {
     }  
 }
 ```
+## Methods
+***
+
+> ### __construct(...$deps)
+> @param mixed ...$deps Injected via the DI Container
+
+You can inject any dependencies you need, so long as they either be inferred by the Type or has the rules define in the DI Rules. [See the di container docs for more details](https://perique.info/core/DI/)
+
+***
+> ### table_name(): string  
+> @return string  
+> @required method
+
+This should return the final name for the table. This can be defined as a string literal or via an injected dependency (such as ['App_Config'](https://perique.info/core/App/app_config))
+
+```php
+/**
+ * Returns the table name from the apps config.
+ *
+ * @return string
+ */
+protected function table_name(): string {
+    return $this->config->db_tables('from_app_config');
+}  
+```
+***
+> ### schema( Schema $schema_config ): void
+> @param PinkCrab\Table_Builder\Schema $schema  
+> @return null
+
+
+
+```php
+/**
+ * Defines the schema for the migration.
+ *
+ * @param Schema $schema_config
+ * @return void
+ */
+abstract public function schema( Schema $schema_config ): void;
+    ```
 
 ## Change Log ##
 
 * 0.1.0 Inital version
+****
