@@ -263,6 +263,56 @@ public function seed( array $seeds ): array {
     ];
 }
 ```
+
+***
+> ### drop_on_deactivation(): bool
+> @return bool
+
+Depending on the return value, the table can be dropped on deactivation. Defaults to `FALSE`
+
+```php
+/**
+ * Is this table dropped on deactivation (Defaults to false)
+ * @return bool
+ */
+public function drop_on_deactivation(): bool {
+    return true;
+}
+```
+
+***
+> ### drop_on_uninstall(): bool
+> @return bool
+
+Depending on the return value, the table can be dropped on uninstall. Defaults to `FALSE`
+
+```php
+/**
+ * Is this table dropped on uninstall (Defaults to false)
+ * @return bool
+ */
+public function drop_on_uninstall(): bool {
+    return true;
+}
+```
+
+***
+> ### seed_on_inital_activation(): bool
+> @return bool
+
+Depending on the return value, will populate tables with defined seeded data Defaults to `TRUE`
+
+> Tables are only seeded once, even in the event of a later update.
+
+```php
+/**
+ * Should this migration be seeded on activation. (Defaults to true)
+ * @return bool
+ */
+public function seed_on_inital_activation(): bool {
+    return true;
+}
+```
 ## Change Log ##
 
 * 0.1.0 Inital version
