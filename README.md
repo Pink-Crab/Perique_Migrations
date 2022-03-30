@@ -2,16 +2,21 @@
 
 A wrapper around various PinkCrab libraries which make it easier to run DB migrations from a plugin created using the Perique Framework.
 
+<<<<<<< HEAD
 ![alt text](https://img.shields.io/badge/Current_Version-0.1.0-yellow.svg?style=flat " ")
+=======
+![alt text](https://img.shields.io/badge/Current_Version-0.1.0_RC2-yellow.svg?style=flat " ")
+>>>>>>> develop
 [![Open Source Love](https://badges.frapsoft.com/os/mit/mit.svg?v=102)]()
 ![](https://github.com/Pink-Crab/Perique-Route/workflows/GitHub_CI/badge.svg " ")
 [![codecov](https://codecov.io/gh/Pink-Crab/Perique-Route/branch/master/graph/badge.svg?token=4yEceIaSFP)](https://codecov.io/gh/Pink-Crab/Perique-Route)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/Pink-Crab/Perique_Migrations/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/Pink-Crab/Perique_Migrations/?branch=master)
 
-## Version 0.1.0 ##
+# Version 0.1.0-RC2
 
 ****
 
-## Why? ##
+# Why?
 
 There already exists a WPDB Migrations system written by PinkCrab for use in any WordPress plugin or even theme. However working this into Perique required building  a small little isolated workflow due to the nature of how the Perique Registration Process works and how WordPress handles plugin events such as Activation, Deactivation and Uninstalling.
 
@@ -27,7 +32,7 @@ As mentioned this library acts more of a bridge for the following packages.
 
 ****
 
-## Setup ##
+# Setup
 
 ```bash
 $ composer require pinkcrab/perique-migrations
@@ -315,7 +320,8 @@ public function seed_on_inital_activation(): bool {
     return true;
 }
 ```
-## Change Log ##
 
-* 0.1.0 Inital version
-****
+## Change Log
+
+* 0.1.0-rc2 - Now uses [Perique Plugin Life Cycle 0.2](https://github.com/Pink-Crab/Perique_Plugin_Life_Cycle) and removes unneeded files when used as a lib via gitattributes
+* 0.1.0-rc1 Inital BETA release.
