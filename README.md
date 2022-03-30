@@ -256,7 +256,7 @@ Returns the data used to populate the table with. Should be returned as an array
  * @param array<int, array<string, mixed>> $seeds  
  * @return array<int, array<string, mixed>>
  */
-public function array $seeds ): array {
+public function seed( array $seeds ): array {
     return [
         ['columnA' => 'value1', 'columnB' => 1.11],
         ['columnA' => 'value2', 'columnB' => 2.22],
