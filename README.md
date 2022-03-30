@@ -182,19 +182,19 @@ class DI_Migration extends Migration {
     }
 
     /** Is this table dropped on deactivation (Defaults to false). */
-	public function drop_on_deactivation(): bool {
-		return false;
-	}
+    public function drop_on_deactivation(): bool {
+        return false;
+    }
 
-	/** Drop table on uninstall. (Defaults to false). */
-	public function drop_on_uninstall(): bool {
-		return true;
-	}
+    /** Drop table on uninstall. (Defaults to false). */
+    public function drop_on_uninstall(): bool {
+        return true;
+    }
 
-	/** Should this migration be seeded on activation. (Defaults to true). */
-	public function seed_on_inital_activation(): bool {
-		return true;
-	}  
+    /** Should this migration be seeded on activation. (Defaults to true). */
+    public function seed_on_inital_activation(): bool {
+        return true;
+    }  
 }
 ```
 
