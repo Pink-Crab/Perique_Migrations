@@ -40,7 +40,7 @@
         "php": ">=7.1.0",
         "pinkcrab/perique-framework-core": "^1.0",
         "pinkcrab/wp-db-migrations": "^1.0",
-        "pinkcrab/perique-plugin-lifecycle": "^0.1"
+        "pinkcrab/perique-plugin-lifecycle": "^0.2"
     },
     "scripts": {
         "test": "./vendor/bin/phpunit --coverage-clover clover.xml --testdox --colors=always",
