@@ -227,16 +227,19 @@ protected function table_name(): string {
 > @param PinkCrab\Table_Builder\Schema $schema  
 > @return null
 
-
+This allows for the definition of the tables schema. Please see the [WPDB Migration](https://github.com/Pink-Crab/WP_DB_Migration) and [WPDB Table Builder](https://github.com/Pink-Crab/WPDB-Table-Builder) libraries for more details
 
 ```php
 /**
  * Defines the schema for the migration.
  *
- * @param Schema $schema_config
+ * @param Schema $schema
  * @return void
  */
-abstract public function schema( Schema $schema_config ): void;
+public function schema( Schema $schema ): void{
+    $schema->column('id')->unsigned_int(12)->auto_increment();
+    // Define rest of schema
+};
 ```
 
 ## Change Log ##
