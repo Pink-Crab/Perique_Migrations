@@ -2,7 +2,9 @@
 
 A wrapper around various PinkCrab libraries which make it easier to run DB migrations from a plugin created using the Perique Framework.
 
-![alt text](https://img.shields.io/badge/Current_Version-0.1.0-yellow.svg?style=flat " ") 
+![alt text](https://img.shields.io/badge/Current_Version-0.1.0-yellow.svg?style=flat " ")
+
+ 
 [![Open Source Love](https://badges.frapsoft.com/os/mit/mit.svg?v=102)]()![](https://github.com/Pink-Crab/Perique-Route/workflows/GitHub_CI/badge.svg " ")
 [![codecov](https://codecov.io/gh/Pink-Crab/Perique-Route/branch/master/graph/badge.svg?token=4yEceIaSFP)](https://codecov.io/gh/Pink-Crab/Perique-Route)
 
@@ -29,9 +31,8 @@ As mentioned this library acts more of a bridge for the following packages.
 ## Setup ##
 
 ```bash
-$ composer install pinkcrab/perique-migrations
+$ composer require pinkcrab/perique-migrations
 ```
-
 
 ### Creation of Migrations
 
@@ -40,7 +41,7 @@ To create database migrations, the `Migration` abstract class must be extended.
 > [Full Migration model references below](#migration-model)
 
 ```php
-class Acme_Migration extends Migration{
+class Acme_Migration extends Migration {
     
     /**
      * Returns the name of the table.
@@ -95,14 +96,15 @@ class Acme_Migration extends Migration{
 ```
 
 > Example of table using [Perique App Config](https://perique.info/core/App/app_config) for table names.
+
 ```php
-class Use_Dependency_Migration extends Migration{
+class Use_Dependency_Migration extends Migration {
     protected $config;
     public function __construct( App_Config $config ) {
         $this->config = $config;
     }
     protected function table_name(): string {
-        return $this->config->db_tables('New Table');
+        return $this->config->db_tables('from_app_config');
     }    
 }
 ```
@@ -143,10 +145,59 @@ $plugin_state_controller->finalise();
 
 ```
 
-
-
 ## Migration Model
 
+> All models must extend from the ( `abstract` ) `PinkCrab\Perique\Migration\Migration` class
+
+```php
+class DI_Migration extends Migration {
+
+    /** Services used */
+    protected Some_Service $some_service;
+    protected App_Config $config;
+
+    /** These would be injected automatically via Perique DI */
+    public function __construct(Some_Service $some_service, App_Config $config){
+        $this->some_service = $some_service;
+        $this->config = $config;
+    }
+
+    /** Gets the table name from the App_Config (Perique Config) */
+    protected function table_name(): string {
+        return $this->config->db_tables('from_app_config');
+    }  
+
+    /**Defines the schema for the migration. */
+    public function schema( Schema $schema_config ): void {
+        $schema_config->column( 'id' )->unsigned_int( 11 )->auto_increment();
+        $schema_config->index( 'id' )->primary();    
+        $schema_config->column( 'user_ref' )->text( 11 );
+        $schema_config->column( 'thingy_ref' )->int( 11 );
+    }
+
+    /**
+     * Defines the data to be seeded. */
+    public function seed( array $seeds ): array {
+        return $this->some_service->seed_data();
+    }
+
+    /** Is this table dropped on deactivation (Defaults to false). */
+	public function drop_on_deactivation(): bool {
+		return false;
+	}
+
+	/** Drop table on uninstall. (Defaults to false). */
+	public function drop_on_uninstall(): bool {
+		return true;
+	}
+
+	/** Should this migration be seeded on activation. (Defaults to true). */
+	public function seed_on_inital_activation(): bool {
+		return true;
+	}  
+}
+```
 
 ## Change Log ##
+
 * 0.1.0 Inital version

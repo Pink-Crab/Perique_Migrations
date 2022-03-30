@@ -15,15 +15,27 @@ namespace PinkCrab\Perique\Migration;
 use PinkCrab\DB_Migration\Database_Migration;
 use PinkCrab\Table_Builder\Schema;
 
+/**
+ * Abstract class for all Migrations
+ *
+ * @method void schema(PinkCrab\Table_Builder\Schema $schema)
+ */
 abstract class Migration extends Database_Migration {
 
-
+	/**
+	 * Creates an instance of the migration.
+	 */
 	public function __construct() {
 		$this->table_name = $this->table_name();
 		$this->schema     = new Schema( $this->table_name, array( $this, 'schema' ) );
 		$this->seed_data  = $this->seed( array() );
 	}
 
+	/**
+	 * Must return the table name for the migration.
+	 *
+	 * @return string
+	 */
 	abstract protected function table_name(): string;
 
 	/**
