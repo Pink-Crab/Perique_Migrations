@@ -5,7 +5,7 @@ coverage.xml
 clover.xml
 /coverage-report
 plugin.php
-
+tests/.env
 .idea
 #vscode
 .vscode
