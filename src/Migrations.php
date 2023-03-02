@@ -241,7 +241,7 @@ class Migrations {
 			$this->plugin_state_controller->event(
 				new Uninstall(
 					$table_names,
-					$this->migration_manager->migation_log()->get_log_key()
+					$this->migration_manager->migration_log()->get_log_key()
 				)
 			);
 		}
