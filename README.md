@@ -2,13 +2,16 @@
 
 A wrapper around various PinkCrab libraries which make it easier to run DB migrations from a plugin created using the Perique Framework.
 
-![alt text](https://img.shields.io/badge/Current_Version-0.1.0-yellow.svg?style=flat " ")
-[![Open Source Love](https://badges.frapsoft.com/os/mit/mit.svg?v=102)]()
-![](https://github.com/Pink-Crab/Perique-Route/workflows/GitHub_CI/badge.svg " ")
+[![Latest Stable Version](http://poser.pugx.org/pinkcrab/perique-migration/v)](https://packagist.org/packages/pinkcrab/perique-migration) [![Total Downloads](http://poser.pugx.org/pinkcrab/perique-migration/downloads)](https://packagist.org/packages/pinkcrab/perique-migration) [![Latest Unstable Version](http://poser.pugx.org/pinkcrab/perique-migration/v/unstable)](https://packagist.org/packages/pinkcrab/perique-migration) [![License](http://poser.pugx.org/pinkcrab/perique-migration/license)](https://packagist.org/packages/pinkcrab/perique-migration) [![PHP Version Require](http://poser.pugx.org/pinkcrab/perique-migration/require/php)](https://packagist.org/packages/pinkcrab/perique-migration)
+![GitHub contributors](https://img.shields.io/github/contributors/Pink-Crab/Perique_Migrations?label=Contributors)
+![GitHub issues](https://img.shields.io/github/issues-raw/Pink-Crab/Perique_Migrations)
+[![WordPress 5.9 Test Suite [PHP7.2-8.1]](https://github.com/Pink-Crab/Perique_Migrations/actions/workflows/WP_5_9.yaml/badge.svg)](https://github.com/Pink-Crab/Perique_Migrations/actions/workflows/WP_5_9.yaml)
+[![WordPress 6.0 Test Suite [PHP7.2-8.1]](https://github.com/Pink-Crab/Perique_Migrations/actions/workflows/WP_6_0.yaml/badge.svg)](https://github.com/Pink-Crab/Perique_Migrations/actions/workflows/WP_6_0.yaml)
+[![WordPress 6.1 Test Suite [PHP7.2-8.1]](https://github.com/Pink-Crab/Perique_Migrations/actions/workflows/WP_6_1.yaml/badge.svg)](https://github.com/Pink-Crab/Perique_Migrations/actions/workflows/WP_6_1.yaml)
 [![codecov](https://codecov.io/gh/Pink-Crab/Perique-Route/branch/master/graph/badge.svg?token=4yEceIaSFP)](https://codecov.io/gh/Pink-Crab/Perique-Route)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/Pink-Crab/Perique_Migrations/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/Pink-Crab/Perique_Migrations/?branch=master)
+[![Maintainability](https://api.codeclimate.com/v1/badges/5e99ca90e359a64809ec/maintainability)](https://codeclimate.com/github/Pink-Crab/Perique_Migrations/maintainability)
 
-# Version 0.1.0
 
 ****
 
@@ -22,7 +25,7 @@ So to make it more seamless adding Database Migrations to Perique, we have creat
 
 As mentioned this library acts more of a bridge for the following packages.
 
-* [WP DB Migrations](https://github.com/Pink-Crab/WP_DB_Migration)
+* [WPDB Migrations](https://github.com/Pink-Crab/WP_DB_Migration)
 * [WPDB Table Builder](https://github.com/Pink-Crab/WPDB-Table-Builder)
 * [Perique Plugin Life Cycle](https://github.com/Pink-Crab/Perique_Plugin_Life_Cycle)
 
@@ -318,7 +321,7 @@ public function seed_on_inital_activation(): bool {
 ```
 
 ## Change Log
-
+* 0.1.1 - Update dependencies and GH Action pipelines.
 * 0.1.0 - Docs added, sample project created.
 * 0.1.0-rc2 - Now uses [Perique Plugin Life Cycle 0.2](https://github.com/Pink-Crab/Perique_Plugin_Life_Cycle) and removes unneeded files when used as a lib via gitattributes
 * 0.1.0-rc1 Inital BETA release.
