@@ -86,7 +86,9 @@ final class Perique_Migrations implements Module {
 		}
 
 		// Add to the events.
-		add_filter( Plugin_Life_Cycle::EVENT_LIST, $this->generate_migration_events_callback( $migration_manager ) );
+		if ( \class_exists( Plugin_Life_Cycle::class ) ) {
+			add_filter( Plugin_Life_Cycle::EVENT_LIST, $this->generate_migration_events_callback( $migration_manager ) );
+		}
 
 	}
 
