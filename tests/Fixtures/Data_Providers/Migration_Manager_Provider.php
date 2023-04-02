@@ -28,7 +28,7 @@ class Migration_Manager_Provider {
 	 */
 	public function with_logging_table_builder( string $log_key, ?\wpdb $wpdb = null ): array {
 		$engine  = new class() implements Engine{
-				public $events = array();
+			public $events = array();
 			public function create_table( Schema $schema ): bool {
 				$this->events['create'][] = $schema;
 				return true;
