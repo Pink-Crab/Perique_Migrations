@@ -77,7 +77,6 @@ final class Perique_Migrations implements Module {
 	 * @return void
 	 */
 	public function pre_boot( App_Config $config, Hook_Loader $loader, DI_Container $di_container ): void { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.FoundInImplementedInterfaceBeforeLastUsed
-
 		// Set the migration manager.
 		$migration_manager = Factory::manager_with_db_delta( $this->migration_log_key );
 
