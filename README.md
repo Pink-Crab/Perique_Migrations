@@ -8,7 +8,7 @@ A wrapper around various PinkCrab libraries which make it easier to run DB migra
 [![WordPress 5.9 Test Suite [PHP7.4-8.1]](https://github.com/Pink-Crab/Perique_Migrations/actions/workflows/WP_5_9.yaml/badge.svg)](https://github.com/Pink-Crab/Perique_Migrations/actions/workflows/WP_5_9.yaml)
 [![WordPress 6.0 Test Suite [PHP7.4-8.1]](https://github.com/Pink-Crab/Perique_Migrations/actions/workflows/WP_6_0.yaml/badge.svg)](https://github.com/Pink-Crab/Perique_Migrations/actions/workflows/WP_6_0.yaml)
 [![WordPress 6.1 Test Suite [PHP7.4-8.2]](https://github.com/Pink-Crab/Perique_Migrations/actions/workflows/WP_6_1.yaml/badge.svg)](https://github.com/Pink-Crab/Perique_Migrations/actions/workflows/WP_6_1.yaml)
-[![WordPress 6.1 Test Suite [PHP7.4-8.2]](https://github.com/Pink-Crab/Perique_Migrations/actions/workflows/WP_6_2.yaml/badge.svg)](https://github.com/Pink-Crab/Perique_Migrations/actions/workflows/WP_6_2.yaml)
+[![WordPress 6.2 Test Suite [PHP7.4-8.2]](https://github.com/Pink-Crab/Perique_Migrations/actions/workflows/WP_6_2.yaml/badge.svg)](https://github.com/Pink-Crab/Perique_Migrations/actions/workflows/WP_6_2.yaml)
 [![codecov](https://codecov.io/gh/Pink-Crab/Perique-Route/branch/master/graph/badge.svg?token=4yEceIaSFP)](https://codecov.io/gh/Pink-Crab/Perique-Route)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/Pink-Crab/Perique_Migrations/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/Pink-Crab/Perique_Migrations/?branch=master)
 [![Maintainability](https://api.codeclimate.com/v1/badges/5e99ca90e359a64809ec/maintainability)](https://codeclimate.com/github/Pink-Crab/Perique_Migrations/maintainability)
