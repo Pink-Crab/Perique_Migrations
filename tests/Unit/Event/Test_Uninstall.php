@@ -46,7 +46,14 @@ class Test_Uninstall extends WP_UnitTestCase {
 		$GLOBALS['wpdb']               = $logable_wpdb;
 		$this->caught_doing_it_wrong   = array();
 
-		( new Uninstall( array( 'table1', 'table2' ), 'foo' ) )();
+		// Create the manager with the logable wpdb.
+		$manager = $this->migration_manager_provider->with_logging_table_builder(
+			'test_suppress_error_state_restored',
+			$logable_wpdb
+		);
+		$manager['migration_manger']->add_migration( new Simple_Table_Migration() );
+
+		( new Uninstall( $manager['migration_manger'] ))();
 
 		$this->assertEquals( false, $logable_wpdb->suppress_errors );
 

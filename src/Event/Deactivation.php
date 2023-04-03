@@ -23,7 +23,7 @@ class Deactivation implements State_Events_Deactivation {
 	 *
 	 * @var Migration_Manager
 	 */
-	protected $migration_manager;
+	protected Migration_Manager $migration_manager;
 
 	public function __construct( Migration_Manager $migration_manager ) {
 		$this->migration_manager = $migration_manager;

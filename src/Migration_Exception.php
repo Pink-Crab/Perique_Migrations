@@ -30,13 +30,13 @@ class Migration_Exception extends Exception {
 	/**
 	 * Returns an exception for a none Migration (string class name or instance) type
 	 * @code 102
-	 * @param mixed $var
+	 * @param string $var
 	 * @return Migration_Exception
 	 */
-	public static function none_migration_type( $var ): Migration_Exception {
+	public static function none_migration_type( string $var ): Migration_Exception {
 		$message = \sprintf(
-			'Migration::class instance or class name expected, got %s',
-			\is_string( $var ) ? $var : \gettype( $var )
+			'Only valid Migration Class names can be passed as migrations, "%s" was passed to Perique_Migrations::add_module()',
+			esc_attr( $var )
 		);
 		return new Migration_Exception( $message, 102 );
 	}

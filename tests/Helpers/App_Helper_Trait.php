@@ -25,10 +25,10 @@ trait App_Helper_Trait {
 	 * @return void
 	 */
 	protected static function unset_app_instance(): void {
-		$app = new App();
+		$app = new App( __DIR__ );
 		Objects::set_property( $app, 'app_config', null );
 		Objects::set_property( $app, 'container', null );
-		Objects::set_property( $app, 'registration', null );
+		Objects::set_property( $app, 'module_manager', null );
 		Objects::set_property( $app, 'loader', null );
 		Objects::set_property( $app, 'booted', false );
 		$app = null;
