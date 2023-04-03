@@ -1,4 +1,7 @@
-# Perique - Migration
+![logo](./.github/Perique%20Migrations%20Card.jpg "PinkCrab Ajax Module")
+
+
+# Perique - Migrations
 
 A wrapper around various PinkCrab libraries which make it easier to run DB migrations from a plugin created using the Perique Framework.
 
@@ -317,7 +320,8 @@ public function seed_on_inital_activation(): bool {
 ```
 
 ## Change Log
-* 2.0.0 - Support for Perique V2
+* 2.0.0 - Support for Perique V2.*
+* 1.0.0 - Initial Release (Supports Perique V1.2-1.4)
 * 0.1.1 - Update dependencies and GH Action pipelines.
 * 0.1.0 - Docs added, sample project created.
 * 0.1.0-rc2 - Now uses [Perique Plugin Life Cycle 0.2](https://github.com/Pink-Crab/Perique_Plugin_Life_Cycle) and removes unneeded files when used as a lib via gitattributes
