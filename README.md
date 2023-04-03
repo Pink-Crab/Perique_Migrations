@@ -1,4 +1,4 @@
-![logo](./.github/Perique%20Migrations%20Card.jpg "PinkCrab Ajax Module")
+![logo](./.github/Perique%20Migrations%20Card.jpg "PinkCrab Perique Migrations")
 
 
 # Perique - Migrations
