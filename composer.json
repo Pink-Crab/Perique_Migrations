@@ -40,7 +40,7 @@
         "php": ">=7.4.0",
         "pinkcrab/perique-framework-core": "2.0.*",
         "pinkcrab/wp-db-migrations": "^1.0",
-        "pinkcrab/perique-plugin-lifecycle": "1.0.*"
+        "pinkcrab/perique-plugin-lifecycle": "2.0.*"
     },
     "scripts": {
         "test": "./vendor/bin/phpunit --coverage-clover clover.xml --testdox --colors=always",
@@ -54,7 +54,5 @@
             "roots/wordpress-core-installer": true,
             "dealerdirect/phpcodesniffer-composer-installer": true
         }
-    },
-    "minimum-stability": "dev",
-    "prefer-stable": true
+    }
 }
