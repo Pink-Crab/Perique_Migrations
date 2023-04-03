@@ -12,6 +12,9 @@ declare(strict_types=1);
 
 namespace PinkCrab\Perique\Migration\Event;
 
+use PinkCrab\Perique\Migration\Migration;
+use PinkCrab\DB_Migration\Migration_Manager;
+use PinkCrab\DB_Migration\Database_Migration;
 use PinkCrab\Plugin_Lifecycle\State_Event\Uninstall as State_Events_Uninstall;
 
 class Uninstall implements State_Events_Uninstall {
@@ -19,22 +22,37 @@ class Uninstall implements State_Events_Uninstall {
 	/**
 	 * Array of tables to be dropped.
 	 *
-	 * @var string[]
+	 * @var Migration[]
 	 */
-	protected $tables = array();
+	protected array $tables = array();
 
 	/**
 	 * The migration log key to clear after dropping tables.
 	 *
 	 * @var string
 	 */
-	protected $migration_log_key;
+	protected string $migration_log_key;
 
-	/** @param string[] $tables */
-	public function __construct( array $tables, string $migration_log_key ) {
-		$this->tables            = $tables;
-		$this->migration_log_key = $migration_log_key;
+	public function __construct( Migration_Manager $migration_manager ) {
+		$this->set_tables( $migration_manager->get_migrations() );
+		$this->migration_log_key = $migration_manager->migration_log()->get_log_key();
 	}
+
+
+	/**
+	 * Set the table to remove
+	 *
+	 * @param Database_Migration[] $migrations
+	 * @return void
+	 */
+	public function set_tables( array $migrations ): void {
+		$this->tables = \array_filter(
+			$migrations,
+			fn( Database_Migration $migration ) => is_a( $migration, Migration::class ) && $migration->drop_on_uninstall()
+		);
+	}
+
+
 
 	/**
 	 * Invokes the run method.
@@ -52,6 +70,11 @@ class Uninstall implements State_Events_Uninstall {
 	 * @return void
 	 */
 	public function run(): void {
+		// If no tables, return.
+		if ( empty( $this->tables ) ) {
+			return;
+		}
+
 		$this->remove_migration_log();
 		$this->drop_tables();
 
@@ -71,7 +94,8 @@ class Uninstall implements State_Events_Uninstall {
 		$wpdb->suppress_errors( true );
 
 		foreach ( $this->tables as $table ) {
-			$wpdb->get_results( "DROP TABLE IF EXISTS {$table}" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			$table_name = $table->get_table_name();
+			$wpdb->get_results( "DROP TABLE IF EXISTS {$table_name}" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		}
 
 		// Reset warnings to initial state.
