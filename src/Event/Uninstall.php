@@ -61,7 +61,6 @@ class Uninstall implements State_Events_Uninstall {
 	 */
 	public function __invoke(): void {
 		$this->run();
-
 	}
 
 	/**
@@ -77,7 +76,6 @@ class Uninstall implements State_Events_Uninstall {
 
 		$this->remove_migration_log();
 		$this->drop_tables();
-
 	}
 
 	/**
@@ -86,7 +84,9 @@ class Uninstall implements State_Events_Uninstall {
 	 * @return void
 	 */
 	protected function drop_tables() {
-		/** @var \wpdb $wpdb */
+		/**
+ * @var \wpdb $wpdb
+*/
 		global $wpdb;
 
 		// Temp disable warnings.

@@ -55,17 +55,19 @@ class Deactivation implements State_Events_Deactivation {
 	 * @return string[] Array of table names.
 	 */
 	private function tables_to_exclude_from_drop_on_deactivation(): array {
-		/** @var Migration[] */
+		/**
+ * @var Migration[]
+*/
 		$migrations = $this->migration_manager->get_migrations();
 
 		return array_values(
 			array_map(
-				function( Migration $migration ): string {
+				function ( Migration $migration ): string {
 					return $migration->get_table_name();
 				},
 				array_filter(
 					$migrations,
-					function( Migration $migration ):bool {
+					function ( Migration $migration ): bool {
 						return false === $migration->drop_on_deactivation();
 					}
 				)
