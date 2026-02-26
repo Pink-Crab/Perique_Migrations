@@ -1,7 +1,7 @@
 <?php
 
 /* Path to the WordPress codebase you'd like to test. Add a forward slash in the end. */
-define( 'ABSPATH', dirname( dirname( __FILE__ ) ) . '/wordpress/' );
+define( 'ABSPATH', dirname( __DIR__ ) . '/wordpress/' );
 
 /*
  * Path to the theme to test with.
@@ -21,6 +21,18 @@ define( 'WP_DEFAULT_THEME', 'default' );
 
 // Test with WordPress debug mode (default).
 define( 'WP_DEBUG', true );
+
+// Custom error handler to suppress known WP 6.8 notice about wp_is_block_theme being called too early.
+// @see https://core.trac.wordpress.org/ticket/63086
+set_error_handler(
+	function ( $errno, $errstr ) {
+		if ( $errno === E_USER_NOTICE && strpos( $errstr, 'wp_is_block_theme' ) !== false ) {
+			return true;
+		}
+		return false;
+	},
+	E_USER_NOTICE
+);
 
 // ** MySQL settings ** //
 
@@ -49,7 +61,8 @@ if ( getenv( 'environment_github' ) ) {
 
 
 
-/**#@+
+/**
+* #@+
  * Authentication Unique Keys and Salts.
  *
  * Change these to different unique phrases!

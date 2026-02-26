@@ -28,7 +28,9 @@ use PinkCrab\Plugin_Lifecycle\Plugin_State_Change;
 
 final class Perique_Migrations implements Module {
 
-	/** @var class-string<Migration>[] */
+	/**
+ * @var class-string<Migration>[]
+*/
 	private array $migrations         = array();
 	private string $migration_log_key = 'pinkcrab_migration_log';
 
@@ -40,7 +42,7 @@ final class Perique_Migrations implements Module {
 	 */
 	public function add_migration( string $migration ): self {
 		if ( ! is_subclass_of( $migration, Migration::class ) ) {
-			throw Migration_Exception::none_migration_type( $migration );
+			throw Migration_Exception::none_migration_type( $migration ); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped
 		}
 
 		$this->migrations[] = $migration;
@@ -89,7 +91,6 @@ final class Perique_Migrations implements Module {
 		if ( \class_exists( Plugin_Life_Cycle::class ) ) {
 			add_filter( Plugin_Life_Cycle::EVENT_LIST, $this->generate_migration_events_callback( $migration_manager ) );
 		}
-
 	}
 
 	/**
@@ -103,7 +104,7 @@ final class Perique_Migrations implements Module {
 		 * @param array<Plugin_State_Change> $events
 		 * @return array<Plugin_State_Change>
 		 */
-		return function( array $events ) use ( $migration_manager ): array {
+		return function ( array $events ) use ( $migration_manager ): array {
 			static $cached = null;
 			if ( is_null( $cached ) ) {
 				$cached = array(
@@ -130,12 +131,12 @@ final class Perique_Migrations implements Module {
 				try {
 					$instance = $container->create( $migration );
 				} catch ( \Throwable $th ) {
-					throw Migration_Exception::failed_to_construct_migration( $migration );
+					throw Migration_Exception::failed_to_construct_migration( esc_attr( $migration ) );
 				}
 
 				// Add to the list if valid.
 				if ( ! is_object( $instance ) || ! is_a( $instance, Migration::class ) ) {
-					throw Migration_Exception::failed_to_construct_migration( $migration );
+					throw Migration_Exception::failed_to_construct_migration( esc_attr( $migration ) );
 				}
 
 				$migrations[] = $instance;
@@ -146,13 +147,19 @@ final class Perique_Migrations implements Module {
 
 	## Unused methods
 
-	/** @inheritDoc */
+	/**
+ * @inheritDoc
+*/
 	public function pre_register( App_Config $config, Hook_Loader $loader, DI_Container $di_container ): void {} // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.FoundInImplementedInterfaceBeforeLastUsed
 
-	/** @inheritDoc */
+	/**
+ * @inheritDoc
+*/
 	public function post_register( App_Config $config, Hook_Loader $loader, DI_Container $di_container ): void {} // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.FoundInImplementedInterfaceBeforeLastUsed
 
-	/** @inheritDoc */
+	/**
+ * @inheritDoc
+*/
 	public function get_middleware(): ?string {
 		return null;
 	}
