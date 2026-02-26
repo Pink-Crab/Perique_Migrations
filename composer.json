@@ -26,9 +26,9 @@
         "phpunit/phpunit": "^8.0 || ^9.0",
         "phpstan/phpstan": "^1.0",
         "szepeviktor/phpstan-wordpress": "^1.0",
-        "php-stubs/wordpress-stubs": "6.2.*",
-        "roots/wordpress": "6.2.*",
-        "wp-phpunit/wp-phpunit": "6.2.*",
+        "php-stubs/wordpress-stubs": "6.6.*",
+        "roots/wordpress": "6.6.*",
+        "wp-phpunit/wp-phpunit": "6.6.*",
         "dealerdirect/phpcodesniffer-composer-installer": "*",
         "wp-coding-standards/wpcs": "*",
         "yoast/phpunit-polyfills": "^1.0.0 || ^2.0.0",
@@ -37,7 +37,7 @@
         "vlucas/phpdotenv": "^5.4"
     },
     "require": {
-        "php": ">=7.4.0",
+        "php": ">=8.0.0",
         "pinkcrab/perique-framework-core": "2.1.*",
         "pinkcrab/wp-db-migrations": "^1.0",
         "pinkcrab/perique-plugin-lifecycle": "2.1.*"

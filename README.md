@@ -320,6 +320,7 @@ public function seed_on_inital_activation(): bool {
 ```
 
 ## Change Log
+* 2.1.0 - Update dependencies to support Perique V2.1
 * 2.0.0 - Support for Perique V2.*
 * 1.0.0 - Initial Release (Supports Perique V1.2-1.4)
 * 0.1.1 - Update dependencies and GH Action pipelines.
