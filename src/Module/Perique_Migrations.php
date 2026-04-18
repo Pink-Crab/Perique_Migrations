@@ -131,7 +131,7 @@ final class Perique_Migrations implements Module {
 				try {
 					$instance = $container->create( $migration );
 				} catch ( \Throwable $th ) {
-					throw Migration_Exception::failed_to_construct_migration( esc_attr( $migration ) );
+					throw Migration_Exception::failed_to_construct_migration( esc_attr( $migration ), esc_html( $th->getMessage() ) );
 				}
 
 				// Add to the list if valid.
