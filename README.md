@@ -319,7 +319,59 @@ public function seed_on_inital_activation(): bool {
 }
 ```
 
+***
+> ### up(): void
+> @return void
+
+Lifecycle hook fired on every activation, **after** the table has been upserted and **before** any seed data is inserted. Default implementation is a no-op — override it when you need to run custom SQL (for example an `ALTER` to add a column introduced by a newer plugin version) or any other post-upsert work.
+
+> Because `up()` fires on **every** activation rather than just first install, implementations MUST be idempotent. Guard your work so running it twice has no effect.
+
+The canonical use case is shipping a new Migration class in a later plugin version whose job is to evolve a table owned by an earlier migration:
+
+```php
+class Add_Email_To_Users_Migration extends Migration {
+
+    protected function table_name(): string {
+        return 'my_users'; // same table as the original migration
+    }
+
+    public function schema( Schema $schema_config ): void {
+        // No-op schema: the original migration already defines the table.
+    }
+
+    public function up(): void {
+        global $wpdb;
+
+        // Idempotency guard: only add the column if it's not there yet.
+        $has_email = $wpdb->get_var( $wpdb->prepare(
+            'SELECT COUNT(*) FROM information_schema.COLUMNS
+             WHERE TABLE_SCHEMA = %s AND TABLE_NAME = %s AND COLUMN_NAME = %s',
+            DB_NAME, 'my_users', 'email'
+        ) );
+
+        if ( (int) $has_email === 0 ) {
+            $wpdb->query( 'ALTER TABLE my_users ADD COLUMN email VARCHAR(255) NULL' );
+        }
+    }
+}
+```
+
+***
+> ### down(): void
+> @return void
+
+Lifecycle hook fired just **before** the migration's table is dropped by the Deactivation or Uninstall event handlers. Only called for migrations that are actually being dropped — i.e. `drop_on_deactivation()` or `drop_on_uninstall()` returned `TRUE`. Migrations that stay in place do not have `down()` called. Default implementation is a no-op — override it to perform custom teardown (export rows elsewhere, emit an audit hook, etc.) while the table still exists.
+
+```php
+public function down(): void {
+    // Called right before the table is dropped.
+    // Use this for last-chance teardown while the table is still readable.
+}
+```
+
 ## Change Log
+* 2.2.0 - Add `up()` and `down()` lifecycle hooks on `Migration` for post-upsert work and pre-drop teardown. Uninstall cleanup now wraps drop + log removal in try/finally so a stale migration log can't outlive a failed drop.
 * 2.1.1 - Updated dev dependencies. Migration_Exception now surfaces the underlying DI failure reason (closes #32).
 * 2.1.0 - Update dependencies to support Perique V2.1
 * 2.0.0 - Support for Perique V2.*

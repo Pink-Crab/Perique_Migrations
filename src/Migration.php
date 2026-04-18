@@ -70,4 +70,30 @@ abstract class Migration extends Database_Migration {
 	public function seed_on_inital_activation(): bool {
 		return true;
 	}
+
+	/**
+	 * Hook fired on every activation, after the table has been upserted and
+	 * before it is seeded. Default implementation is a no-op; override it to
+	 * run custom SQL (e.g. ALTER statements on an existing table installed by
+	 * an earlier migration) or any other post-upsert work.
+	 *
+	 * Implementations MUST be idempotent — this method fires on every
+	 * activation, not just on first install.
+	 *
+	 * @return void
+	 */
+	public function up(): void {
+	}
+
+	/**
+	 * Hook fired just before the migration's table is dropped by the
+	 * Deactivation or Uninstall event handlers. Only called for migrations
+	 * that are actually being dropped (i.e. drop_on_deactivation() or
+	 * drop_on_uninstall() returned true). Default implementation is a no-op;
+	 * override it to perform custom teardown while the table still exists.
+	 *
+	 * @return void
+	 */
+	public function down(): void {
+	}
 }
