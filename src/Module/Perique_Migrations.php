@@ -136,7 +136,11 @@ final class Perique_Migrations implements Module {
 
 				// Add to the list if valid.
 				if ( ! is_object( $instance ) || ! is_a( $instance, Migration::class ) ) {
-					throw Migration_Exception::failed_to_construct_migration( esc_attr( $migration ) );
+					$returned_type = is_object( $instance ) ? get_class( $instance ) : gettype( $instance );
+					throw Migration_Exception::failed_to_construct_migration(
+						esc_attr( $migration ),
+						sprintf( 'DI container returned %s instead of a Migration.', esc_html( $returned_type ) )
+					);
 				}
 
 				$migrations[] = $instance;

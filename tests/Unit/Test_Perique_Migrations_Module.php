@@ -139,13 +139,13 @@ class Test_Perique_Migrations_Module extends WP_UnitTestCase {
 		$module->pre_boot( $app_config, $loader, $container );
 	}
 
-	/** @testdox If the container can not create a valid instance of a migration (NONE OBJECT), a Migration_Exception should be thrown [CODE 101] */
+	/** @testdox If the container returns a non-object for a migration, the TypeError from DI_Container::create (return type ?object) propagates up as a Migration_Exception with the underlying reason surfaced. [CODE 101] */
     public function test_container_cant_create_valid_migration_throws_exception(): void {
         $migration = 'PinkCrab\Perique\Migration\Tests\Fixtures\Simple_Table_Migration';
-        
+
         $this->expectException( \PinkCrab\Perique\Migration\Migration_Exception::class );
         $this->expectExceptionCode( 101 );
-        $this->expectExceptionMessage( "Failed to construct {$migration} using the DI Container" );
+        $this->expectExceptionMessage( 'Return value must be of type ?object' );
 
         // Mocks
         $app_config = new App_Config();
@@ -166,10 +166,10 @@ class Test_Perique_Migrations_Module extends WP_UnitTestCase {
     /** @testdox If the container can not create a valid instance of a migration (INVALID OBJECT TYPE), a Migration_Exception should be thrown [CODE 101] */
     public function test_container_cant_create_valid_migration_type_throws_exception(): void {
         $migration = 'PinkCrab\Perique\Migration\Tests\Fixtures\Simple_Table_Migration';
-        
+
         $this->expectException( \PinkCrab\Perique\Migration\Migration_Exception::class );
         $this->expectExceptionCode( 101 );
-        $this->expectExceptionMessage( "Failed to construct {$migration} using the DI Container" );
+        $this->expectExceptionMessage( 'DI container returned stdClass instead of a Migration.' );
 
         // Mocks
         $app_config = new App_Config();
