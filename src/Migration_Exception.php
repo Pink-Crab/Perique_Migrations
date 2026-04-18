@@ -21,10 +21,13 @@ class Migration_Exception extends Exception {
 	 * Returns an exception if a migration can not constructed with DI.
 	 *
 	 * @code 101
+	 * @param string      $migration_class_name
+	 * @param string|null $additional_info Optional message from the underlying failure (e.g. DI error), appended to the exception message so it's visible in logs.
 	 * @return Migration_Exception
 	 */
-	public static function failed_to_construct_migration( string $migration_class_name ): Migration_Exception {
-		$message = \sprintf( 'Failed to construct %s using the DI Container', $migration_class_name );
+	public static function failed_to_construct_migration( string $migration_class_name, ?string $additional_info = null ): Migration_Exception {
+		$suffix  = $additional_info ? ': ' . $additional_info : '';
+		$message = \sprintf( 'Failed to construct %s using the DI Container%s', $migration_class_name, $suffix );
 		return new Migration_Exception( $message, 101 );
 	}
 

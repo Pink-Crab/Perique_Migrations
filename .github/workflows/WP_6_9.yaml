@@ -64,5 +64,9 @@ jobs:
           environment_github: true
         run: composer all
 
-      - name: Codecov
-        run: bash <(curl -s https://codecov.io/bash) -t ${{ secrets.CODCOV_MIGRATION }}
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          token: ${{ secrets.CODCOV_MIGRATION }}
+          files: ./clover.xml
+          fail_ci_if_error: false
