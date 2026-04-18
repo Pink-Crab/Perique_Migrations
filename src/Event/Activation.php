@@ -36,7 +36,23 @@ class Activation implements State_Events_Activation {
 	 */
 	public function run(): void {
 		$this->upsert_tables();
+		$this->run_up_hooks();
 		$this->seed_tables();
+	}
+
+	/**
+	 * Fire the up() hook on every registered migration, after the schema has
+	 * been upserted and before seeding. Implementations of up() must be
+	 * idempotent; see Migration::up().
+	 *
+	 * @return void
+	 */
+	private function run_up_hooks(): void {
+		/** @var Migration[] $migrations */
+		$migrations = $this->migration_manager->get_migrations();
+		foreach ( $migrations as $migration ) {
+			$migration->up();
+		}
 	}
 
 	/**

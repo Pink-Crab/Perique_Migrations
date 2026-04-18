@@ -66,6 +66,11 @@ class Uninstall implements State_Events_Uninstall {
 	/**
 	 * Runs the dropping of all valid tables.
 	 *
+	 * The down() hooks and the table drops run inside a try block; the
+	 * migration log is removed in the finally so it is always cleaned up,
+	 * even if a drop fails part-way through, so a subsequent reinstall
+	 * starts from a clean manifest.
+	 *
 	 * @return void
 	 */
 	public function run(): void {
@@ -74,8 +79,28 @@ class Uninstall implements State_Events_Uninstall {
 			return;
 		}
 
-		$this->remove_migration_log();
-		$this->drop_tables();
+		try {
+			$this->run_down_hooks();
+			$this->drop_tables();
+		} finally {
+			$this->remove_migration_log();
+		}
+	}
+
+	/**
+	 * Fire the down() hook on each migration flagged for drop-on-uninstall,
+	 * before the table is actually dropped so the hook can still read from
+	 * it. $this->tables has already been filtered to just the migrations
+	 * with drop_on_uninstall() === true.
+	 *
+	 * @return void
+	 */
+	private function run_down_hooks(): void {
+		foreach ( $this->tables as $migration ) {
+			if ( $migration instanceof Migration ) {
+				$migration->down();
+			}
+		}
 	}
 
 	/**
@@ -85,8 +110,8 @@ class Uninstall implements State_Events_Uninstall {
 	 */
 	protected function drop_tables() {
 		/**
- * @var \wpdb $wpdb
-*/
+		 * @var \wpdb $wpdb
+		*/
 		global $wpdb;
 
 		// Temp disable warnings.

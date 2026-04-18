@@ -35,7 +35,26 @@ class Deactivation implements State_Events_Deactivation {
 	 * @return void
 	 */
 	public function run(): void {
+		$this->run_down_hooks();
 		$this->drop_tables();
+	}
+
+	/**
+	 * Fire the down() hook on each migration flagged to be dropped on
+	 * deactivation, before the table is actually dropped so the hook can
+	 * still read from it. Migrations where drop_on_deactivation() is false
+	 * are left alone and their down() is not called.
+	 *
+	 * @return void
+	 */
+	private function run_down_hooks(): void {
+		/** @var Migration[] $migrations */
+		$migrations = $this->migration_manager->get_migrations();
+		foreach ( $migrations as $migration ) {
+			if ( $migration->drop_on_deactivation() ) {
+				$migration->down();
+			}
+		}
 	}
 
 	/**
